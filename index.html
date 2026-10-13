@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STAR BANK</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    background: #f3f6fb;
+    color: #18243b;
+}
+
+header {
+    background: #14264b;
+    color: white;
+    padding: 22px;
+    text-align: center;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+header p {
+    color: #c8d5f0;
+    margin-bottom: 0;
+}
+
+main {
+    max-width: 480px;
+    margin: 25px auto;
+    padding: 16px;
+}
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 5px 20px #15284b0d;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+input, button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+input {
+    border: 1px solid #d8deea;
+    background: #fafbfe;
+}
+
+button {
+    border: none;
+    background: #2455d6;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:active {
+    opacity: 0.8;
+}
+
+.secondary {
+    background: #eaf0ff;
+    color: #2455d6;
+}
+
+.danger {
+    background: #fff0f0;
+    color: #c03939;
+}
+
+.balance {
+    background: linear-gradient(135deg, #14264b, #3266d5);
+    color: white;
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 18px;
+}
+
+.balance small {
+    color: #d4e0ff;
+}
+
+.amount {
+    font-size: 36px;
+    font-weight: 800;
+    margin: 12px 0;
+    overflow-wrap: anywhere;
+}
+
+.account-label {
+    color: #d4e0ff;
+    font-size: 13px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+}
+
+.row button {
+    width: auto;
+    margin-top: 0;
+}
+
+.transaction {
+    padding: 13px 0;
+    border-bottom: 1px solid #edf0f5;
+    overflow-wrap: anywhere;
+}
+
+.transaction:last-child {
+    border-bottom: none;
+}
+
+.positive {
+    color: #16834b;
+    font-weight: bold;
+}
+
+.negative {
+    color: #d04444;
+    font-weight: bold;
+}
+
+.muted {
+    color: #748096;
+    font-size: 13px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.notice {
+    font-size: 13px;
+    color: #748096;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    color: #8993a6;
+    font-size: 12px;
+    padding: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✦ STAR BANK</div>
+    <p>Your virtual money. Your universe.</p>
+</header>
+
+<main>
+
+    <!-- LOGIN AND REGISTRATION -->
+    <section id="auth">
+
+        <div class="card">
+            <h2>Welcome back</h2>
+            <p class="muted">Log in to your virtual account.</p>
+
+            <input id="loginUser"
+                   placeholder="Username"
+                   autocomplete="username">
+
+            <input id="loginPin"
+                   type="password"
+                   inputmode="numeric"
+                   placeholder="4-digit PIN"
+                   maxlength="4"
+                   autocomplete="current-password">
+
+            <button onclick="login()">Log In →</button>
+        </div>
+
+        <div class="card">
+            <h2>Create an account</h2>
+            <p class="muted">Open your STAR BANK virtual account.</p>
+
+            <input id="newUser"
+                   placeholder="Choose a username"
+                   maxlength="20"
+                   autocomplete="username">
+
+            <input id="newPin"
+                   type="password"
+                   inputmode="numeric"
+                   placeholder="Choose a 4-digit PIN"
+                   maxlength="4"
+                   autocomplete="new-password">
+
+            <button onclick="register()">Create Account</button>
+
+            <p class="notice">
+                New accounts start with ৳1,000 in virtual money.
+            </p>
+        </div>
+
+    </section>
+
+    <!-- BANK DASHBOARD -->
+    <section id="dashboard" class="hidden">
+
+        <div class="row" style="margin-bottom:18px">
+            <div>
+                <div class="muted">SIGNED IN AS</div>
+                <strong id="welcomeUser"></strong>
+            </div>
+            <button class="secondary" onclick="logout()">Log Out</button>
+        </div>
+
+        <div class="balance">
+            <small>AVAILABLE BALANCE</small>
+            <div class="amount" id="balance">৳1,000</div>
+            <div class="account-label">
+                Virtual account · <span id="accountId"></span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>↗ Send Money</h2>
+            <p class="muted">
+                Transfer virtual money to another username.
+            </p>
+
+            <input id="recipient"
+                   placeholder="Recipient's username"
+                   maxlength="20">
+
+            <input id="transferAmount"
+                   type="number"
+                   min="1"
+                   step="1"
+                   placeholder="Amount in ৳">
+
+            <button onclick="transfer()">Send Money →</button>
+        </div>
+
+        <div class="card">
+            <h2>▤ Transaction History</h2>
+            <div id="history">
+                <p class="muted">No transactions yet.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Account Information</h2>
+            <p class="muted">Username</p>
+            <strong id="profileUser"></strong>
+
+            <p class="muted" style="margin-top:16px">
+                Account number
+            </p>
+            <strong id="profileId"></strong>
+        </div>
+
+    </section>
+
+    <p class="notice">
+        STAR BANK is a fictional virtual-money simulator.
+        It is not a real bank and does not handle real money.
+    </p>
+
+</main>
+
+<footer>STAR BANK © 2026 · Virtual Banking Experience</footer>
+
+<script>
+const STORAGE_KEY = "starBankData_v1";
+
+let accounts = {};
+let currentUser = null;
+
+try {
+    accounts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+} catch (error) {
+    accounts = {};
+}
+
+function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(accounts));
+}
+
+function cleanUsername(value) {
+    return value.trim().toLowerCase();
+}
+
+function formatMoney(amount) {
+    return "৳" + Number(amount).toLocaleString("en-BD");
+}
+
+function makeAccountId() {
+    return "SB" + Math.random().toString(10).slice(2, 10);
+}
+
+function register() {
+    const username = cleanUsername(
+        document.getElementById("newUser").value
+    );
+
+    const pin = document.getElementById("newPin").value;
+
+    if (!/^[a-z0-9_]{3,20}$/.test(username)) {
+        alert("Username must be 3–20 characters using letters, numbers or underscores.");
+        return;
+    }
+
+    if (!/^\d{4}$/.test(pin)) {
+        alert("Please choose a 4-digit PIN.");
+        return;
+    }
+
+    if (accounts[username]) {
+        alert("That username is already taken!");
+        return;
+    }
+
+    accounts[username] = {
+        username: username,
+        pin: pin,
+        balance: 1000,
+        accountId: makeAccountId(),
+        history: []
+    };
+
+    save();
+
+    document.getElementById("newUser").value = "";
+    document.getElementById("newPin").value = "";
+
+    currentUser = username;
+    showDashboard();
+
+    alert("Account created! You received ৳1,000 in virtual money.");
+}
+
+function login() {
+    const username = cleanUsername(
+        document.getElementById("loginUser").value
+    );
+
+    const pin = document.getElementById("loginPin").value;
+
+    if (!accounts[username] || accounts[username].pin !== pin) {
+        alert("Incorrect username or PIN.");
+        return;
+    }
+
+    currentUser = username;
+
+    document.getElementById("loginPin").value = "";
+
+    showDashboard();
+}
+
+function logout() {
+    currentUser = null;
+
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("auth").classList.remove("hidden");
+}
+
+function showDashboard() {
+    document.getElementById("auth").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+
+    const account = accounts[currentUser];
+
+    document.getElementById("welcomeUser").textContent =
+        account.username;
+
+    document.getElementById("balance").textContent =
+        formatMoney(account.balance);
+
+    document.getElementById("accountId").textContent =
+        account.accountId;
+
+    document.getElementById("profileUser").textContent =
+        account.username;
+
+    document.getElementById("profileId").textContent =
+        account.accountId;
+
+    renderHistory();
+}
+
+function transfer() {
+    const recipientName = cleanUsername(
+        document.getElementById("recipient").value
+    );
+
+    const amount = Number(
+        document.getElementById("transferAmount").value
+    );
+
+    if (!recipientName || !accounts[recipientName]) {
+        alert("Recipient account not found. Check the username.");
+        return;
+    }
+
+    if (recipientName === currentUser) {
+        alert("You cannot send money to yourself!");
+        return;
+    }
+
+    if (!Number.isSafeInteger(amount) || amount <= 0) {
+        alert("Enter a valid whole-number amount.");
+        return;
+    }
+
+    const sender = accounts[currentUser];
+    const recipient = accounts[recipientName];
+
+    if (amount > sender.balance) {
+        alert("Insufficient virtual balance!");
+        return;
+    }
+
+    if (!confirm(
+        "Send " + formatMoney(amount) +
+        " to " + recipient.username + "?"
+    )) {
+        return;
+    }
+
+    sender.balance -= amount;
+    recipient.balance += amount;
+
+    const time = new Date().toLocaleString();
+
+    sender.history.unshift({
+        type: "Sent",
+        other: recipient.username,
+        amount: amount,
+        time: time
+    });
+
+    recipient.history.unshift({
+        type: "Received",
+        other: sender.username,
+        amount: amount,
+        time: time
+    });
+
+    save();
+
+    document.getElementById("recipient").value = "";
+    document.getElementById("transferAmount").value = "";
+
+    showDashboard();
+
+    alert("Transfer complete! Virtual money sent successfully.");
+}
+
+function renderHistory() {
+    const history = accounts[currentUser].history;
+    const container = document.getElementById("history");
+
+    container.innerHTML = "";
+
+    if (!history.length) {
+        container.innerHTML =
+            '<p class="muted">No transactions yet.</p>';
+        return;
+    }
+
+    history.slice(0, 30).forEach(function (item) {
+        const row = document.createElement("div");
+        row.className = "transaction";
+
+        const top = document.createElement("div");
+        top.className = "row";
+
+        const title = document.createElement("strong");
+        title.textContent = item.type + " · " + item.other;
+
+        const value = document.createElement("span");
+        value.className =
+            item.type === "Received" ? "positive" : "negative";
+
+        value.textContent =
+            (item.type === "Received" ? "+" : "−") +
+            formatMoney(item.amount);
+
+        const time = document.createElement("div");
+        time.className = "muted";
+        time.style.marginTop = "6px";
+        time.textContent = item.time;
+
+        top.appendChild(title);
+        top.appendChild(value);
+
+        row.appendChild(top);
+        row.appendChild(time);
+
+        container.appendChild(row);
+    });
+}
+</script>
+
+</body>
+</html>
