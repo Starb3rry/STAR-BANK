@@ -2,253 +2,332 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STAR BANK</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
 :root {
-  --bg: #0b1020;
-  --panel: #151f33;
-  --line: #2c3b55;
-  --text: #f0f5ff;
-  --muted: #9baac3;
-  --green: #73f0c0;
-  --red: #ff929e;
+  --bg:#0b1020;
+  --card:#121a2c;
+  --ink:#edf2ff;
+  --muted:#9aa8c3;
+  --blue:#5277ff;
+  --line:#26324a;
+  --green:#42d3a0;
+  --red:#ff7887;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 
 body {
-  margin: 0;
-  background: radial-gradient(ellipse at top, #1b3150, var(--bg) 65%);
-  color: var(--text);
-  font-family: system-ui, -apple-system, sans-serif;
-  min-height: 100vh;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
 }
 
-button, input { font: inherit; }
+button,input { font:inherit; }
 
 button {
-  cursor: pointer;
-  border: 0;
-  border-radius: 12px;
-  padding: 12px 16px;
-  font-weight: 750;
-  background: var(--green);
-  color: #071710;
+  cursor:pointer;
+  border:0;
+  border-radius:12px;
+  padding:12px 16px;
+  font-weight:bold;
+  background:var(--blue);
+  color:white;
 }
 
-button:disabled { opacity: .5; }
-
-.secondary {
-  background: #25334c;
-  color: white;
-  border: 1px solid #40516d;
+button:disabled {
+  opacity:.5;
 }
-
-input {
-  width: 100%;
-  padding: 13px;
-  border-radius: 11px;
-  background: #0c1526;
-  color: white;
-  border: 1px solid #35445f;
-  outline: none;
-}
-
-input:focus { border-color: var(--green); }
 
 .wrap {
-  max-width: 1050px;
-  margin: auto;
-  padding: 22px 16px 45px;
+  max-width:1050px;
+  margin:auto;
+  padding:24px 16px 50px;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 32px;
+.top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:26px;
 }
 
 .brand {
-  font-weight: 950;
-  font-size: 22px;
-  letter-spacing: 1px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:21px;
+  font-weight:900;
+}
+
+.logo {
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#315efb,#6c8cff);
+  display:grid;
+  place-items:center;
+  font-size:22px;
 }
 
 .tag {
-  font-size: 11px;
-  border: 1px solid var(--line);
-  color: var(--muted);
-  padding: 7px 10px;
-  border-radius: 20px;
-}
-
-h1 {
-  font-size: clamp(30px, 6vw, 48px);
-  line-height: 1.1;
-  letter-spacing: -1px;
-}
-
-h2 { font-size: 20px; }
-
-p { color: var(--muted); }
-
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 22px;
-  margin-bottom: 18px;
-  min-width: 0;
-}
-
-.auth {
-  max-width: 480px;
-}
-
-.field {
-  margin: 15px 0;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 7px;
-  font-size: 13px;
-  color: #cbd7e9;
-}
-
-.full { width: 100%; }
-
-.tabs {
-  display: flex;
-  gap: 8px;
-}
-
-.tabs button { flex: 1; }
-
-.tabs .inactive {
-  background: #25334c;
-  color: white;
+  font-size:12px;
+  color:var(--muted);
+  background:#1b2540;
+  padding:7px 10px;
+  border-radius:30px;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:18px;
 }
 
 .card {
-  background: linear-gradient(125deg, #19745d, #194b68, #303a7d);
-  border-radius: 19px;
-  padding: 22px;
-  min-height: 180px;
-  margin-bottom: 18px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:22px;
+  min-width:0;
 }
 
-.cardnum {
-  margin: 28px 0;
-  font-size: 18px;
-  letter-spacing: 2px;
+.hero {
+  background:linear-gradient(135deg,#1d2f63,#315efb);
+  color:white;
+  border:0;
+  min-height:215px;
 }
 
-.muted {
-  color: var(--muted);
-  font-size: 12px;
+.eyebrow {
+  font-size:12px;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  opacity:.8;
+  font-weight:bold;
 }
 
 .balance {
-  font-size: clamp(32px, 6vw, 45px);
-  font-weight: 900;
-  margin: 5px 0;
-  overflow-wrap: anywhere;
+  font-size:clamp(34px,7vw,48px);
+  font-weight:850;
+  margin:14px 0 8px;
+  overflow-wrap:anywhere;
+}
+
+.sub {
+  font-size:13px;
+  opacity:.8;
+  line-height:1.6;
+}
+
+.hero-actions {
+  display:flex;
+  gap:10px;
+  margin-top:24px;
+}
+
+.hero-actions button {
+  background:#ffffff1c;
+  border:1px solid #ffffff45;
+}
+
+.section-title {
+  font-size:17px;
+  font-weight:850;
+  margin:0 0 16px;
+}
+
+.muted {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+.label {
+  font-size:12px;
+  font-weight:bold;
+  color:#a7b4cc;
+}
+
+.field {
+  display:block;
+  width:100%;
+  border:1px solid #2a3650;
+  background:#0d1425;
+  padding:13px 14px;
+  border-radius:12px;
+  margin:8px 0 13px;
+  color:var(--ink);
+}
+
+.field:focus {
+  outline:2px solid #5277ff;
 }
 
 .row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
+  display:flex;
+  gap:10px;
 }
 
-.row > * { flex: 1; }
-
-.stat {
-  background: #0c1526;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  padding: 13px;
-  min-width: 0;
-  overflow-wrap: anywhere;
+.row > * {
+  flex:1;
+  min-width:0;
 }
 
-.stat strong {
-  display: block;
-  margin-top: 5px;
+.full {
+  width:100%;
 }
 
 .notice {
-  display: none;
-  padding: 12px;
-  border-radius: 10px;
-  margin: 12px 0;
-  overflow-wrap: anywhere;
+  display:none;
+  margin:0 0 16px;
+  padding:12px 14px;
+  border-radius:12px;
+  background:#3a3018;
+  color:#ffe19a;
+  font-size:13px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
 }
 
-.notice.show { display: block; }
-
-.error {
-  background: #42232e;
-  color: #ffd8e0;
+.notice.show {
+  display:block;
 }
 
-.success {
-  background: #153a30;
-  color: #c8ffeb;
+.tabs {
+  display:flex;
+  gap:6px;
+  background:#0c1425;
+  border-radius:12px;
+  padding:4px;
+  margin-bottom:18px;
 }
 
-.hidden { display: none !important; }
+.tabs button {
+  flex:1;
+  background:transparent;
+  color:#8794ad;
+  padding:10px;
+}
+
+.tabs button.active {
+  background:#202b42;
+  color:#91a8ff;
+}
+
+.hidden {
+  display:none !important;
+}
+
+.statline {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  border-bottom:1px solid var(--line);
+  padding:13px 0;
+  font-size:13px;
+}
+
+.statline strong {
+  overflow-wrap:anywhere;
+  text-align:right;
+}
+
+.transactions {
+  margin-top:18px;
+}
 
 .tx {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--line);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
 }
 
-.tx:last-child { border: 0; }
-
-.tx small {
-  display: block;
-  color: var(--muted);
+.tx-icon {
+  width:38px;
+  height:38px;
+  border-radius:13px;
+  background:#202b42;
+  color:#91a8ff;
+  display:grid;
+  place-items:center;
+  font-weight:bold;
+  flex-shrink:0;
 }
 
-.green { color: var(--green); }
-.red { color: var(--red); }
-
-.qr {
-  background: white;
-  border-radius: 12px;
-  padding: 12px;
-  display: inline-block;
-  margin: 8px 0 15px;
-  min-height: 20px;
+.tx-main {
+  min-width:0;
+  flex:1;
 }
 
-footer {
-  text-align: center;
-  color: var(--muted);
-  font-size: 12px;
-  padding: 15px;
+.tx-main strong {
+  display:block;
+  font-size:13px;
+  overflow-wrap:anywhere;
 }
 
-@media (max-width: 700px) {
-  .grid { grid-template-columns: 1fr; }
-  .panel { padding: 17px; }
-  header { align-items: flex-start; }
+.tx-main small {
+  color:var(--muted);
+  font-size:11px;
+}
+
+.amount {
+  font-weight:bold;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+.positive { color:var(--green); }
+.negative { color:var(--red); }
+
+#qrcode {
+  background:white;
+  padding:12px;
+  display:inline-block;
+  border-radius:14px;
+  min-height:124px;
+  min-width:124px;
+}
+
+#reader {
+  width:100%;
+  max-width:360px;
+  margin:12px auto;
+}
+
+.foot {
+  text-align:center;
+  color:#697792;
+  font-size:11px;
+  margin-top:24px;
+}
+
+.secondary {
+  background:#edf2ff;
+  color:#294bd1;
+}
+
+.danger {
+  background:#3a202a;
+  color:var(--red);
+}
+
+@media(max-width:760px) {
+  .grid { grid-template-columns:1fr; }
+  .wrap { padding:16px 12px 36px; }
+  .card { padding:18px; }
+  .top { margin-bottom:18px; }
+  .balance { font-size:40px; }
 }
 </style>
 </head>
@@ -256,441 +335,244 @@ footer {
 <body>
 <div class="wrap">
 
-<header>
+<header class="top">
   <div class="brand">
-    ✦ STAR BANK
-    <div class="muted">Your virtual money universe</div>
+    <div class="logo">✦</div>
+    <div>
+      STAR BANK
+      <div style="font-size:11px;font-weight:600;letter-spacing:1.6px;color:#8490a6;margin-top:2px">
+        VIRTUAL MONEY • PLAY MODE
+      </div>
+    </div>
   </div>
-  <span class="tag">DEMO BANK · NOT REAL MONEY</span>
+  <span class="tag">DEMO BANK</span>
 </header>
 
-<!-- LOGIN / REGISTRATION -->
+<div id="notice" class="notice"></div>
 
-<section id="authView">
-  <h1>Your money.<br><span class="green">Your universe.</span></h1>
-  <p>Create your account and transfer virtual money to other members.</p>
+<section id="authView" class="grid">
 
-  <div class="panel auth">
-    <div id="authNotice" class="notice"></div>
+  <div class="card hero">
+    <div class="eyebrow">Your money, your universe</div>
+
+    <div style="font-size:31px;font-weight:850;line-height:1.15;margin-top:20px;max-width:340px">
+      A simpler way to move virtual money.
+    </div>
+
+    <p class="sub" style="max-width:340px">
+      Create a demo account, keep your balance saved, and send money to other STAR BANK members.
+    </p>
+  </div>
+
+  <div class="card">
 
     <div class="tabs">
-      <button id="loginTab">Log in</button>
-      <button id="signupTab" class="inactive">Create account</button>
+      <button id="loginTab" class="active" type="button">Log in</button>
+      <button id="signupTab" type="button">Create account</button>
     </div>
 
     <form id="authForm">
-      <div id="usernameField" class="field hidden">
-        <label for="username">Choose a username</label>
-        <input id="username"
-          minlength="3"
-          maxlength="20"
-          pattern="[A-Za-z0-9_]{3,20}"
-          placeholder="starb3rry">
-        <div class="muted">3–20 letters, numbers, or underscores.</div>
+
+      <div id="usernameWrap" class="hidden">
+        <label class="label" for="username">Choose a username</label>
+        <input class="field" id="username" maxlength="24"
+          autocomplete="username" placeholder="e.g. Starberry">
       </div>
 
-      <div class="field">
-        <label for="email">Email address</label>
-        <input id="email" type="email"
-          autocomplete="email" required
-          placeholder="you@example.com">
-      </div>
+      <label class="label" for="email">Email address</label>
+      <input class="field" id="email" type="email" required
+        autocomplete="email" placeholder="you@example.com">
 
-      <div class="field">
-        <label for="password">Password</label>
-        <input id="password" type="password"
-          minlength="6" required
-          autocomplete="current-password"
-          placeholder="At least 6 characters">
-      </div>
+      <label class="label" for="password">Password</label>
+      <input class="field" id="password" type="password" required
+        minlength="6" autocomplete="current-password"
+        placeholder="At least 6 characters">
 
-      <button id="authButton" class="full">Log in</button>
+      <button id="authSubmit" class="full" type="submit">Log in</button>
     </form>
 
     <p class="muted">
-      Use a unique password. STAR BANK uses fictional money only.
+      This is a fictional virtual-money project, not a real bank.
+      Use a password you don't use anywhere else.
     </p>
+
   </div>
 </section>
 
-<!-- BANK DASHBOARD -->
-
-<section id="bankView" class="hidden">
-  <div class="row" style="margin-bottom:15px">
-    <div>
-      <h1 style="font-size:30px;margin-bottom:5px">
-        Welcome, <span id="hello" class="green"></span>
-      </h1>
-      <p>Your account dashboard</p>
-    </div>
-    <button id="logout" class="secondary" style="flex:0 0 auto">
-      Log out
-    </button>
-  </div>
-
-  <div id="bankNotice" class="notice"></div>
+<section id="appView" class="hidden">
 
   <div class="grid">
+    <div>
 
-    <div class="panel">
+      <div class="card hero">
+        <div class="eyebrow">Available balance</div>
+        <div id="balance" class="balance">— ST</div>
+        <div class="sub">STAR TOKENS · saved to your account</div>
+
+        <div class="hero-actions">
+          <button type="button" id="refreshBtn">↻ Refresh</button>
+          <button type="button" id="signoutBtn">Log out</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <h2 class="section-title">Send virtual money</h2>
+
+        <form id="transferForm">
+
+          <label class="label" for="receiver">Recipient username</label>
+          <input id="receiver" class="field" required maxlength="24"
+            placeholder="e.g. Rex">
+
+          <div class="row">
+            <div>
+              <label class="label" for="amount">Amount (ST)</label>
+              <input id="amount" class="field" type="number"
+                min="1" step="1" required placeholder="100">
+            </div>
+
+            <div style="display:flex;align-items:end;padding-bottom:13px">
+              <button class="full" id="sendBtn" type="submit">Send money</button>
+            </div>
+          </div>
+        </form>
+
+        <p class="muted">Transfers are recorded in your demo transaction history.</p>
+      </div>
+
+    </div>
+
+    <div>
+
       <div class="card">
-        <strong>✦ STAR BANK</strong>
-        <div class="cardnum">
-          •••• &nbsp; •••• &nbsp; •••• &nbsp; <span id="lastFour">0000</span>
-        </div>
-        <strong id="cardName">STAR MEMBER</strong>
-        <div class="muted">VIRTUAL ACCOUNT</div>
-      </div>
+        <h2 class="section-title">Your account</h2>
 
-      <div class="muted">AVAILABLE BALANCE</div>
-      <div id="balance" class="balance">৳1,000</div>
-      <div class="muted">Virtual Bangladeshi taka</div>
-
-      <div class="row" style="margin-top:17px">
-        <div class="stat">
+        <div class="statline">
           <span class="muted">Username</span>
-          <strong id="myUsername">@member</strong>
+          <strong id="accountUsername">—</strong>
         </div>
-        <div class="stat">
-          <span class="muted">Status</span>
-          <strong class="green">Active</strong>
+
+        <div class="statline">
+          <span class="muted">Account status</span>
+          <strong>Active</strong>
+        </div>
+
+        <div class="statline">
+          <span class="muted">Account ID</span>
+          <strong id="accountId">—</strong>
         </div>
       </div>
-    </div>
 
-    <div class="panel">
-      <h2>Send virtual money 💸</h2>
-      <p>Enter the recipient's STAR BANK username.</p>
+      <div class="card" style="margin-top:18px">
+        <h2 class="section-title">Receive with QR</h2>
 
-      <form id="transferForm">
-        <div class="field">
-          <label for="recipient">Recipient username</label>
-          <input id="recipient" required
-            maxlength="20" placeholder="rex">
+        <p class="muted">
+          Let another member scan this code to get your username.
+        </p>
+
+        <div style="text-align:center;margin:16px 0">
+          <div id="qrcode"></div>
         </div>
 
-        <div class="field">
-          <label for="amount">Amount (৳)</label>
-          <input id="amount" type="number"
-            min="1" max="1000000000"
-            step="1" required placeholder="250">
+        <div class="row">
+          <button type="button" class="secondary" id="downloadQr">Save QR</button>
+          <button type="button" class="secondary" id="scanBtn">Scan QR</button>
         </div>
 
-        <button id="sendButton" class="full">
-          Send money ↗
-        </button>
-      </form>
-
-      <hr style="border-color:var(--line);margin:23px 0">
-
-      <h2>Your account QR</h2>
-      <p class="muted">
-        Let someone scan your QR to fill in your username.
-      </p>
-
-      <div><div id="qr" class="qr"></div></div>
-
-      <div class="row">
-        <button id="saveQR" class="secondary">Save QR</button>
-        <button id="scanQR" class="secondary">Scan QR</button>
+        <div id="scannerWrap" class="hidden">
+          <div id="reader"></div>
+          <button type="button" class="danger full" id="stopCamera">Stop camera</button>
+        </div>
       </div>
 
-      <div id="cameraArea" class="hidden" style="margin-top:15px">
-        <div id="reader"></div>
-        <button id="stopCamera" class="secondary full">
-          Stop camera
-        </button>
-      </div>
     </div>
   </div>
 
-  <div class="panel">
-    <div class="row">
-      <div>
-        <h2>Transaction history</h2>
-        <p class="muted">Your recent transfers.</p>
-      </div>
-      <button id="refresh" class="secondary"
-        style="flex:0 0 auto">Refresh</button>
+  <div class="card transactions">
+    <h2 class="section-title">Recent activity</h2>
+    <div id="transactions">
+      <p class="muted">Loading transactions…</p>
     </div>
-
-    <div id="transactions">Loading transactions...</div>
   </div>
+
 </section>
 
-<footer>
-  STAR BANK · Fictional demo banking · No real deposits or payments
-</footer>
+<div class="foot">
+  STAR BANK · Unofficial virtual-money demo · No real currency or banking services
+</div>
 
 </div>
 
-<!-- Libraries -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
 <script>
-/*
-  STEP 2:
-  Replace BOTH placeholders below with your Supabase details.
-*/
+// STAR BANK SUPABASE CONNECTION
+const SUPABASE_URL = "https://mlghrbbqojrzqssezotp.supabase.co";
+const SUPABASE_KEY = "sb_publishable_6LCTWzJPhQXZXJq3y9Bvcw_1upiBrXJ";
 
-const SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE";
-const SUPABASE_KEY = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+const supa = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 const $ = id => document.getElementById(id);
 
-let db = null;
 let mode = "login";
 let account = null;
 let scanner = null;
 
-function showNotice(id, message, type = "error") {
-  const el = $(id);
-  el.className = "notice show " + type;
+function notice(message, isError = false) {
+  const el = $("notice");
   el.textContent = message;
+  el.style.background = isError ? "#3a202a" : "#3a3018";
+  el.style.color = isError ? "#ffabb4" : "#ffe19a";
+  el.classList.add("show");
 }
 
-function clearNotice(id) {
-  $(id).className = "notice";
-  $(id).textContent = "";
+function clearNotice() {
+  $("notice").classList.remove("show");
 }
 
-function client() {
-  if (!window.supabase) {
-    throw new Error(
-      "Supabase could not load. Check your internet connection."
-    );
-  }
+function setMode(next) {
+  mode = next;
 
-  if (
-    SUPABASE_URL.includes("PASTE_YOUR") ||
-    SUPABASE_KEY.includes("PASTE_YOUR")
-  ) {
-    throw new Error(
-      "Add your Supabase Project URL and publishable key in the code first."
-    );
-  }
+  $("loginTab").classList.toggle("active", mode === "login");
+  $("signupTab").classList.toggle("active", mode === "signup");
 
-  if (!db) {
-    db = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
-  }
+  $("usernameWrap").classList.toggle("hidden", mode !== "signup");
+  $("username").required = mode === "signup";
 
-  return db;
-}
-
-function money(value) {
-  return "৳" + Number(value || 0).toLocaleString("en-BD", {
-    maximumFractionDigits: 0
-  });
-}
-
-function setMode(newMode) {
-  mode = newMode;
-
-  $("loginTab").classList.toggle("inactive", mode !== "login");
-  $("signupTab").classList.toggle("inactive", mode !== "signup");
-
-  $("usernameField").classList.toggle(
-    "hidden", mode !== "signup"
-  );
-
-  $("authButton").textContent =
+  $("authSubmit").textContent =
     mode === "login" ? "Log in" : "Create account";
 
   $("password").autocomplete =
     mode === "login" ? "current-password" : "new-password";
 
-  clearNotice("authNotice");
+  clearNotice();
 }
 
 $("loginTab").onclick = () => setMode("login");
 $("signupTab").onclick = () => setMode("signup");
 
-function showLogin() {
-  $("authView").classList.remove("hidden");
-  $("bankView").classList.add("hidden");
-}
-
-function renderQR(username) {
-  $("qr").innerHTML = "";
-
-  if (!window.QRCode) {
-    $("qr").textContent = username;
-    return;
-  }
-
-  new QRCode($("qr"), {
-    text: "STAR_BANK_USER:" + username,
-    width: 160,
-    height: 160,
-    correctLevel: QRCode.CorrectLevel.M
-  });
-}
-
-async function loadAccount() {
-  const supa = client();
-
-  const { data: { user }, error: userError } =
-    await supa.auth.getUser();
-
-  if (userError) throw userError;
-
-  if (!user) {
-    account = null;
-    showLogin();
-    return;
-  }
-
-  let result = await supa
-    .from("bank_accounts")
-    .select("id, username, balance")
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-  if (result.error) throw result.error;
-
-  /*
-    Accounts are created after email verification if Supabase
-    requires verification before allowing login.
-  */
-  if (!result.data) {
-    const suggestion = (user.email || "member")
-      .split("@")[0]
-      .toLowerCase()
-      .replace(/[^a-z0-9_]/g, "")
-      .slice(0, 20);
-
-    const username = prompt(
-      "Choose your STAR BANK username (3–20 letters, numbers, or underscores):",
-      suggestion.length >= 3 ? suggestion : "member123"
-    );
-
-    if (username === null) {
-      await supa.auth.signOut();
-      showLogin();
-      return;
-    }
-
-    const created = await supa.rpc(
-      "create_bank_account",
-      { p_username: username }
-    );
-
-    if (created.error) throw created.error;
-
-    result = await supa
-      .from("bank_accounts")
-      .select("id, username, balance")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    if (result.error) throw result.error;
-
-    if (!result.data) {
-      throw new Error(
-        "Account creation finished, but the account could not be loaded. Try Refresh."
-      );
-    }
-  }
-
-  account = result.data;
-
-  $("authView").classList.add("hidden");
-  $("bankView").classList.remove("hidden");
-
-  $("hello").textContent = account.username;
-  $("cardName").textContent = account.username.toUpperCase();
-  $("lastFour").textContent =
-    account.id.replaceAll("-", "").slice(-4).toUpperCase();
-
-  $("myUsername").textContent = "@" + account.username;
-  $("balance").textContent = money(account.balance);
-
-  renderQR(account.username);
-
-  await loadTransactions();
-}
-
-async function loadTransactions() {
-  if (!account) return;
-
-  const { data, error } = await client()
-    .from("bank_transactions")
-    .select("id, sender_id, receiver_id, amount, created_at")
-    .or(
-      "sender_id.eq." + account.id +
-      ",receiver_id.eq." + account.id
-    )
-    .order("created_at", { ascending: false })
-    .limit(20);
-
-  if (error) throw error;
-
-  const box = $("transactions");
-  box.innerHTML = "";
-
-  if (!data || data.length === 0) {
-    box.textContent = "No transactions yet.";
-    return;
-  }
-
-  data.forEach(tx => {
-    const outgoing = tx.sender_id === account.id;
-
-    const row = document.createElement("div");
-    row.className = "tx";
-
-    const info = document.createElement("div");
-    const title = document.createElement("strong");
-
-    title.textContent = outgoing
-      ? "Money sent"
-      : "Money received";
-
-    const date = document.createElement("small");
-    date.textContent = new Date(
-      tx.created_at
-    ).toLocaleString();
-
-    info.append(title, date);
-
-    const amount = document.createElement("strong");
-    amount.className = outgoing ? "red" : "green";
-    amount.textContent =
-      (outgoing ? "−" : "+") + money(tx.amount);
-
-    row.append(info, amount);
-    box.append(row);
-  });
-}
-
-/* CREATE ACCOUNT / LOG IN */
-
 $("authForm").addEventListener("submit", async event => {
   event.preventDefault();
+  clearNotice();
 
-  clearNotice("authNotice");
-
-  const button = $("authButton");
+  const button = $("authSubmit");
   button.disabled = true;
 
   try {
-    const supa = client();
     const email = $("email").value.trim();
     const password = $("password").value;
 
     if (mode === "signup") {
       const username = $("username").value.trim();
 
-      if (!/^[A-Za-z0-9_]{3,20}$/.test(username)) {
+      if (!/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
         throw new Error(
-          "Username must contain 3–20 letters, numbers, or underscores."
+          "Username must be 3–24 characters using letters, numbers, or underscores."
         );
       }
+
+      localStorage.setItem("starbank_pending_username", username);
 
       const { data, error } = await supa.auth.signUp({
         email,
@@ -700,28 +582,14 @@ $("authForm").addEventListener("submit", async event => {
       if (error) throw error;
 
       if (!data.session) {
-        showNotice(
-          "authNotice",
-          "Account registration started! Check your email for a verification link. After verifying, return and log in. You'll then choose your STAR BANK username.",
-          "success"
+        setMode("login");
+
+        notice(
+          "Account created! If Supabase asks you to confirm your email, check your inbox first. Then log in using the same email and password. Your chosen username is saved on this device."
         );
-        return;
+      } else {
+        await finishLogin();
       }
-
-      const { error: accountError } = await supa.rpc(
-        "create_bank_account",
-        { p_username: username }
-      );
-
-      if (accountError) throw accountError;
-
-      showNotice(
-        "authNotice",
-        "Your STAR BANK account has been created!",
-        "success"
-      );
-
-      await loadAccount();
 
     } else {
       const { error } = await supa.auth.signInWithPassword({
@@ -731,211 +599,372 @@ $("authForm").addEventListener("submit", async event => {
 
       if (error) throw error;
 
-      await loadAccount();
+      await finishLogin();
     }
 
   } catch (error) {
-    showNotice(
-      "authNotice",
-      error.message || "Something went wrong."
-    );
+    notice(error.message || "Something went wrong.", true);
   } finally {
     button.disabled = false;
   }
 });
 
-/* TRANSFER VIRTUAL MONEY */
+async function ensureAccount() {
+  const { data: userData, error: userError } =
+    await supa.auth.getUser();
 
-$("transferForm").addEventListener("submit", async event => {
-  event.preventDefault();
+  if (userError) throw userError;
 
-  clearNotice("bankNotice");
+  const user = userData.user;
 
-  const username = $("recipient").value.trim();
-  const amount = Number($("amount").value);
+  if (!user) {
+    throw new Error("Please log in again.");
+  }
 
-  if (!Number.isSafeInteger(amount) || amount < 1) {
-    showNotice(
-      "bankNotice",
-      "Enter a positive whole-number amount."
+  let { data, error } = await supa
+    .from("bank_accounts")
+    .select("id, username, balance, user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  if (!data) {
+    const username =
+      localStorage.getItem("starbank_pending_username");
+
+    if (!username) {
+      throw new Error(
+        "No STAR BANK account is linked to this login. If this is a new account, log out and register again with a username."
+      );
+    }
+
+    const { error: createError } = await supa.rpc(
+      "create_bank_account",
+      { p_username: username }
     );
+
+    if (createError) throw createError;
+
+    localStorage.removeItem("starbank_pending_username");
+
+    const result = await supa
+      .from("bank_accounts")
+      .select("id, username, balance, user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (result.error) throw result.error;
+
+    data = result.data;
+  }
+
+  if (!data) {
+    throw new Error("Account setup did not finish. Please refresh.");
+  }
+
+  account = data;
+}
+
+async function finishLogin() {
+  await ensureAccount();
+
+  $("authView").classList.add("hidden");
+  $("appView").classList.remove("hidden");
+
+  await loadAccount();
+}
+
+async function loadAccount() {
+  clearNotice();
+
+  const { data: sessionData, error: sessionError } =
+    await supa.auth.getSession();
+
+  if (sessionError) throw sessionError;
+
+  const session = sessionData.session;
+
+  if (!session) {
+    $("authView").classList.remove("hidden");
+    $("appView").classList.add("hidden");
     return;
   }
 
-  const button = $("sendButton");
+  try {
+    await ensureAccount();
+
+    const { data, error } = await supa
+      .from("bank_accounts")
+      .select("id, username, balance, user_id")
+      .eq("user_id", session.user.id)
+      .single();
+
+    if (error) throw error;
+
+    account = data;
+
+    $("balance").textContent =
+      Number(account.balance).toLocaleString() + " ST";
+
+    $("accountUsername").textContent = account.username;
+
+    $("accountId").textContent =
+      String(account.id).slice(0, 8) + "…";
+
+    $("qrcode").innerHTML = "";
+
+    new QRCode($("qrcode"), {
+      text: "STARBANK:" + account.username,
+      width: 124,
+      height: 124,
+      colorDark: "#14213d",
+      colorLight: "#ffffff"
+    });
+
+    await loadTransactions();
+
+  } catch (error) {
+    notice(error.message || "Could not load your account.", true);
+  }
+}
+
+async function loadTransactions() {
+  const box = $("transactions");
+
+  const { data, error } = await supa
+    .from("bank_transactions")
+    .select("sender_id, receiver_id, amount, created_at")
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  if (error) {
+    box.textContent = "Could not load transaction history: " + error.message;
+    return;
+  }
+
+  if (!data || !data.length) {
+    box.innerHTML =
+      '<p class="muted">No transactions yet. Send your first virtual payment!</p>';
+    return;
+  }
+
+  const ids = [
+    ...new Set(
+      data.flatMap(t => [t.sender_id, t.receiver_id]).filter(Boolean)
+    )
+  ];
+
+  const names = {};
+
+  if (ids.length) {
+    const { data: accounts } = await supa
+      .from("bank_accounts")
+      .select("id, username")
+      .in("id", ids);
+
+    (accounts || []).forEach(a => {
+      names[a.id] = a.username;
+    });
+  }
+
+  box.innerHTML = data.map(t => {
+    const sent = t.sender_id === account.id;
+
+    const other = sent
+      ? names[t.receiver_id] || "Member"
+      : names[t.sender_id] || "Member";
+
+    const amount = Number(t.amount) || 0;
+
+    return `
+      <div class="tx">
+        <div class="tx-icon">${sent ? "↗" : "↙"}</div>
+
+        <div class="tx-main">
+          <strong>${sent ? "Sent to" : "Received from"} ${escapeHtml(other)}</strong>
+          <small>${new Date(t.created_at).toLocaleString()}</small>
+        </div>
+
+        <div class="amount ${sent ? "negative" : "positive"}">
+          ${sent ? "−" : "+"}${amount.toLocaleString()} ST
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+
+$("transferForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  clearNotice();
+
+  const username = $("receiver").value.trim();
+  const amount = Number($("amount").value);
+  const button = $("sendBtn");
+
+  if (!Number.isSafeInteger(amount) || amount < 1) {
+    notice("Enter a whole-number amount greater than zero.", true);
+    return;
+  }
+
+  if (
+    username.toLowerCase() ===
+    String(account?.username).toLowerCase()
+  ) {
+    notice("You cannot send money to your own account.", true);
+    return;
+  }
+
+  if (amount > Number(account?.balance)) {
+    notice("You do not have enough virtual money.", true);
+    return;
+  }
+
+  if (!confirm(`Send ${amount.toLocaleString()} ST to ${username}?`)) {
+    return;
+  }
+
   button.disabled = true;
 
   try {
-    const { error } = await client().rpc("transfer_money", {
+    const { error } = await supa.rpc("transfer_money", {
       p_receiver_username: username,
       p_amount: amount
     });
 
     if (error) throw error;
 
-    showNotice(
-      "bankNotice",
-      "Transfer successful! " +
-      money(amount) + " sent to @" + username + ".",
-      "success"
-    );
+    $("amount").value = "";
 
-    $("transferForm").reset();
+    notice("Transfer complete!");
 
     await loadAccount();
 
   } catch (error) {
-    showNotice(
-      "bankNotice",
-      error.message || "Transfer failed."
-    );
+    notice(error.message || "Transfer failed.", true);
   } finally {
     button.disabled = false;
   }
 });
 
-/* LOG OUT */
+$("refreshBtn").onclick = loadAccount;
 
-$("logout").onclick = async () => {
-  try {
-    const { error } = await client().auth.signOut();
-    if (error) throw error;
+$("signoutBtn").onclick = async () => {
+  await stopScanner();
 
-    account = null;
-    showLogin();
-    clearNotice("authNotice");
+  await supa.auth.signOut();
 
-  } catch (error) {
-    showNotice("bankNotice", error.message);
-  }
+  account = null;
+
+  $("appView").classList.add("hidden");
+  $("authView").classList.remove("hidden");
+
+  clearNotice();
 };
 
-/* REFRESH */
+$("downloadQr").onclick = () => {
+  const image = $("qrcode").querySelector("img");
 
-$("refresh").onclick = async () => {
-  try {
-    await loadAccount();
-
-    if (account) {
-      showNotice(
-        "bankNotice",
-        "Balance and transactions refreshed.",
-        "success"
-      );
-    }
-  } catch (error) {
-    showNotice("bankNotice", error.message);
-  }
-};
-
-/* SAVE QR IMAGE */
-
-$("saveQR").onclick = () => {
-  const image = $("qr").querySelector("img");
-  const canvas = $("qr").querySelector("canvas");
-
-  const url = image
-    ? image.src
-    : canvas
-      ? canvas.toDataURL("image/png")
-      : null;
-
-  if (!url) {
-    showNotice("bankNotice", "QR code isn't ready yet.");
+  if (!image) {
+    notice("Your QR code is not ready yet.", true);
     return;
   }
 
   const link = document.createElement("a");
-  link.href = url;
+
+  link.href = image.src;
   link.download = "star-bank-qr.png";
   link.click();
 };
 
-/* OPTIONAL CAMERA QR SCANNER */
-
-$("scanQR").onclick = async () => {
-  if (!window.Html5Qrcode) {
-    showNotice(
-      "bankNotice",
-      "QR scanner library failed to load. Check your internet."
-    );
-    return;
-  }
-
-  $("cameraArea").classList.remove("hidden");
+$("scanBtn").onclick = async () => {
+  $("scannerWrap").classList.remove("hidden");
 
   try {
-    scanner = new Html5Qrcode("reader");
+    if (!scanner) {
+      scanner = new Html5Qrcode("reader");
+    }
 
     await scanner.start(
       { facingMode: "environment" },
       { fps: 10, qrbox: { width: 220, height: 220 } },
-      async decoded => {
+
+      decoded => {
         let username = decoded.trim();
 
-        if (username.startsWith("STAR_BANK_USER:")) {
-          username = username.slice("STAR_BANK_USER:".length);
+        if (username.startsWith("STARBANK:")) {
+          username = username.slice(9);
         }
 
-        if (/^[a-z0-9_]{3,20}$/i.test(username)) {
-          $("recipient").value = username;
-
-          showNotice(
-            "bankNotice",
-            "Scanned @" + username +
-            ". Check the recipient and amount before sending.",
-            "success"
-          );
-
-          await stopScanner();
+        if (/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
+          $("receiver").value = username;
+          notice("Recipient filled in! Check the username before sending.");
+        } else {
+          notice("That is not a STAR BANK payment QR code.", true);
         }
+
+        stopScanner();
       },
+
       () => {}
     );
 
   } catch (error) {
-    showNotice(
-      "bankNotice",
-      "Camera could not start. Allow camera access and use your HTTPS GitHub Pages website. " +
-      (error.message || "")
+    notice(
+      "Camera could not start. Allow camera access and open the website over HTTPS.",
+      true
     );
-
-    $("cameraArea").classList.add("hidden");
   }
 };
 
 async function stopScanner() {
-  if (scanner) {
+  if (scanner && scanner.isScanning) {
     try {
-      if (scanner.isScanning) await scanner.stop();
-      await scanner.clear();
+      await scanner.stop();
     } catch (error) {}
-
-    scanner = null;
   }
 
-  $("cameraArea").classList.add("hidden");
+  $("scannerWrap").classList.add("hidden");
 }
 
 $("stopCamera").onclick = stopScanner;
 
-/* START */
+supa.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_OUT") {
+    $("authView").classList.remove("hidden");
+    $("appView").classList.add("hidden");
+
+  } else if (event === "SIGNED_IN" && session) {
+    setTimeout(() => {
+      finishLogin().catch(error => {
+        notice(error.message || "Account setup failed.", true);
+      });
+    }, 0);
+  }
+});
 
 (async () => {
   try {
-    const supa = client();
+    const { data, error } = await supa.auth.getSession();
 
-    const { data: { session } } = await supa.auth.getSession();
+    if (error) throw error;
 
-    if (session) {
+    if (data.session) {
       await loadAccount();
     }
 
   } catch (error) {
-    showNotice(
-      "authNotice",
-      error.message || "Please check your Supabase setup."
-    );
+    notice(error.message || "Please check your Supabase setup.", true);
   }
 })();
 </script>
