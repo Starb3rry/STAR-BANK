@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>STAR BANK</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -11,323 +11,192 @@
 
 <style>
 :root {
-  --bg:#0b1020;
-  --card:#121a2c;
-  --ink:#edf2ff;
-  --muted:#9aa8c3;
-  --blue:#5277ff;
-  --line:#26324a;
+  --bg:#080d19;
+  --panel:#111a2c;
+  --text:#f4f7ff;
+  --muted:#99a8c2;
+  --accent:#6d5dfc;
+  --line:#26334c;
   --green:#42d3a0;
   --red:#ff7887;
 }
-
 * { box-sizing:border-box; }
-
 body {
   margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Arial,Helvetica,sans-serif;
+  background:radial-gradient(ellipse at top left,#25205a,transparent 45%),var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
-
 button,input { font:inherit; }
-
 button {
+  border:0;
+  border-radius:12px;
+  padding:12px 15px;
+  background:var(--accent);
+  color:white;
+  font-weight:750;
   cursor:pointer;
-  border:0;
-  border-radius:12px;
-  padding:12px 16px;
-  font-weight:bold;
-  background:var(--blue);
-  color:white;
 }
-
-button:disabled {
-  opacity:.5;
-}
-
-.wrap {
-  max-width:1050px;
-  margin:auto;
-  padding:24px 16px 50px;
-}
-
-.top {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:26px;
-}
-
-.brand {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-size:21px;
-  font-weight:900;
-}
-
-.logo {
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#315efb,#6c8cff);
-  display:grid;
-  place-items:center;
-  font-size:22px;
-}
-
-.tag {
-  font-size:12px;
-  color:var(--muted);
-  background:#1b2540;
-  padding:7px 10px;
-  border-radius:30px;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-  gap:18px;
-}
-
-.card {
-  background:var(--card);
+button:disabled { opacity:.5; }
+input {
+  width:100%;
+  padding:13px;
+  margin:8px 0 14px;
   border:1px solid var(--line);
-  border-radius:22px;
-  padding:22px;
-  min-width:0;
-}
-
-.hero {
-  background:linear-gradient(135deg,#1d2f63,#315efb);
+  border-radius:11px;
+  background:#0a1222;
   color:white;
-  border:0;
-  min-height:215px;
+  outline:none;
 }
-
-.eyebrow {
-  font-size:12px;
-  letter-spacing:1.2px;
-  text-transform:uppercase;
-  opacity:.8;
-  font-weight:bold;
-}
-
-.balance {
-  font-size:clamp(34px,7vw,48px);
-  font-weight:850;
-  margin:14px 0 8px;
-  overflow-wrap:anywhere;
-}
-
-.sub {
-  font-size:13px;
-  opacity:.8;
-  line-height:1.6;
-}
-
-.hero-actions {
-  display:flex;
-  gap:10px;
-  margin-top:24px;
-}
-
-.hero-actions button {
-  background:#ffffff1c;
-  border:1px solid #ffffff45;
-}
-
-.section-title {
-  font-size:17px;
-  font-weight:850;
-  margin:0 0 16px;
-}
-
-.muted {
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.5;
-}
-
-.label {
-  font-size:12px;
-  font-weight:bold;
-  color:#a7b4cc;
-}
-
-.field {
-  display:block;
-  width:100%;
-  border:1px solid #2a3650;
-  background:#0d1425;
-  padding:13px 14px;
-  border-radius:12px;
-  margin:8px 0 13px;
-  color:var(--ink);
-}
-
-.field:focus {
-  outline:2px solid #5277ff;
-}
-
-.row {
-  display:flex;
-  gap:10px;
-}
-
-.row > * {
-  flex:1;
-  min-width:0;
-}
-
-.full {
-  width:100%;
-}
-
-.notice {
-  display:none;
-  margin:0 0 16px;
-  padding:12px 14px;
-  border-radius:12px;
-  background:#3a3018;
-  color:#ffe19a;
-  font-size:13px;
-  line-height:1.5;
-  overflow-wrap:anywhere;
-}
-
-.notice.show {
-  display:block;
-}
-
-.tabs {
-  display:flex;
-  gap:6px;
-  background:#0c1425;
-  border-radius:12px;
-  padding:4px;
-  margin-bottom:18px;
-}
-
-.tabs button {
-  flex:1;
-  background:transparent;
-  color:#8794ad;
-  padding:10px;
-}
-
-.tabs button.active {
-  background:#202b42;
-  color:#91a8ff;
-}
-
-.hidden {
-  display:none !important;
-}
-
-.statline {
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  border-bottom:1px solid var(--line);
-  padding:13px 0;
-  font-size:13px;
-}
-
-.statline strong {
-  overflow-wrap:anywhere;
-  text-align:right;
-}
-
-.transactions {
-  margin-top:18px;
-}
-
-.tx {
+input:focus { border-color:#8777ff; }
+label { color:#b7c3dc;font-size:12px;font-weight:750; }
+.wrap { max-width:1000px;margin:auto;padding:22px 15px 40px; }
+header {
   display:flex;
   align-items:center;
+  justify-content:space-between;
   gap:12px;
-  padding:13px 0;
-  border-bottom:1px solid var(--line);
+  margin-bottom:24px;
 }
-
-.tx-icon {
-  width:38px;
-  height:38px;
-  border-radius:13px;
-  background:#202b42;
-  color:#91a8ff;
-  display:grid;
-  place-items:center;
-  font-weight:bold;
-  flex-shrink:0;
+.brand { display:flex;align-items:center;gap:12px;font-weight:950;font-size:22px; }
+.logo {
+  display:grid;place-items:center;
+  width:44px;height:44px;border-radius:15px;
+  background:linear-gradient(135deg,#7c5cff,#24c8ff);
 }
-
-.tx-main {
+.tag {
+  padding:7px 10px;border-radius:30px;
+  background:#1b2540;color:#a9b8d2;font-size:11px;
+}
+.grid { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
+.panel {
   min-width:0;
-  flex:1;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:21px;
+  box-shadow:0 15px 40px #0003;
 }
-
-.tx-main strong {
-  display:block;
-  font-size:13px;
-  overflow-wrap:anywhere;
+.hero {
+  background:linear-gradient(135deg,#20194b,#344fca 60%,#16a8bd);
+  border:0;
 }
-
-.tx-main small {
-  color:var(--muted);
-  font-size:11px;
+h2 { font-size:17px;margin:0 0 16px; }
+.muted { color:var(--muted);font-size:13px;line-height:1.6; }
+.hidden { display:none!important; }
+.notice {
+  display:none;padding:12px;margin-bottom:15px;
+  border-radius:10px;background:#3a3018;color:#ffe19a;
+  font-size:13px;overflow-wrap:anywhere;
 }
-
-.amount {
-  font-weight:bold;
-  font-size:13px;
-  white-space:nowrap;
+.notice.show { display:block; }
+.tabs { display:flex;gap:8px;margin-bottom:20px; }
+.tabs button { flex:1;background:#0a1222;color:#9aa8c3; }
+.tabs button.active { background:#30265f;color:white; }
+.balance { font-size:42px;font-weight:900;margin:15px 0;letter-spacing:-1px; }
+.actions { display:flex;flex-wrap:wrap;gap:8px;margin-top:18px; }
+.actions button { flex:1; }
+.secondary { background:#e7eaff;color:#302b7b; }
+.danger { background:#3a202a;color:#ffabb4; }
+.stat {
+  display:flex;justify-content:space-between;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;
 }
-
+.stat:last-child { border:0; }
+#qrcode {
+  display:inline-block;background:white;padding:12px;
+  border-radius:12px;min-width:124px;min-height:124px;
+}
+#reader { max-width:350px;width:100%;margin:15px auto; }
+.tx {
+  display:flex;align-items:center;gap:12px;
+  padding:13px 0;border-bottom:1px solid var(--line);
+}
+.tx:last-child { border:0; }
+.tx-icon {
+  display:grid;place-items:center;flex-shrink:0;
+  width:38px;height:38px;border-radius:12px;
+  background:#202b42;color:#91a8ff;
+}
+.tx-main { flex:1;min-width:0; }
+.tx-main strong { display:block;font-size:13px;overflow-wrap:anywhere; }
+.tx-main small { color:var(--muted);font-size:11px; }
+.amount { font-size:13px;font-weight:850;white-space:nowrap; }
 .positive { color:var(--green); }
 .negative { color:var(--red); }
 
-#qrcode {
-  background:white;
-  padding:12px;
-  display:inline-block;
-  border-radius:14px;
-  min-height:124px;
-  min-width:124px;
+/* CARD STUDIO */
+.studio { margin-top:18px; }
+.studio-grid { display:grid;grid-template-columns:1fr 1fr;gap:22px; }
+.bank-card {
+  --c1:#5a35dc;
+  --c2:#10b9c9;
+  min-height:220px;
+  padding:23px;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  border-radius:22px;
+  background:linear-gradient(125deg,var(--c1),var(--c2));
+  box-shadow:0 18px 40px #0005;
+  transition:.2s;
 }
-
-#reader {
-  width:100%;
-  max-width:360px;
-  margin:12px auto;
+.bank-card:before {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:220px;height:220px;
+  right:-50px;top:-100px;
+  border:1px solid #ffffff50;
+  border-radius:50%;
+  box-shadow:0 0 0 25px #ffffff0c,0 0 0 50px #ffffff08;
 }
-
-.foot {
-  text-align:center;
-  color:#697792;
-  font-size:11px;
-  margin-top:24px;
+.card-top,.card-bottom {
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
 }
-
-.secondary {
-  background:#edf2ff;
-  color:#294bd1;
+.chip {
+  width:39px;height:29px;border-radius:7px;
+  background:linear-gradient(135deg,#f4e4a7,#b8a56a);
+  border:1px solid #ffffff80;
 }
-
-.danger {
-  background:#3a202a;
-  color:var(--red);
+.card-type {
+  border:1px solid #ffffff77;
+  padding:6px 9px;border-radius:30px;font-size:10px;font-weight:900;
 }
+.card-number { font-size:20px;letter-spacing:2px;margin:26px 0 19px; }
+.card-holder { font-size:12px;font-weight:850;letter-spacing:1px;overflow-wrap:anywhere; }
+.card-brand { font-size:19px;font-weight:950;font-style:italic; }
+.control { margin-top:16px; }
+.control-title { display:block;margin-bottom:9px; }
+.segmented { display:flex;gap:7px; }
+.segmented button {
+  flex:1;background:#0a1222;border:1px solid var(--line);color:#a9b8d2;
+}
+.segmented button.selected { background:#30265f;border-color:#8777ff;color:white; }
+.swatches { display:flex;gap:11px;flex-wrap:wrap;padding:5px 0; }
+.swatch {
+  width:34px;height:34px;padding:0;border-radius:50%;
+  border:3px solid #ffffff33;
+}
+.swatch.selected { outline:2px solid white;outline-offset:3px; }
+.designs { display:grid;grid-template-columns:repeat(3,1fr);gap:7px; }
+.designs button {
+  background:#0a1222;border:1px solid var(--line);
+  color:#d7e0f4;font-size:11px;padding:11px 5px;
+}
+.designs button.selected { background:#30265f;border-color:#8777ff; }
+.metrics { display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px; }
+.metric { padding:12px;background:#0a1222;border-radius:12px;border:1px solid var(--line); }
+.metric span { display:block;color:var(--muted);font-size:11px; }
+.metric strong { display:block;margin-top:6px;font-size:14px; }
+footer { text-align:center;color:#697792;font-size:11px;margin-top:25px; }
 
-@media(max-width:760px) {
-  .grid { grid-template-columns:1fr; }
-  .wrap { padding:16px 12px 36px; }
-  .card { padding:18px; }
-  .top { margin-bottom:18px; }
-  .balance { font-size:40px; }
+@media(max-width:700px) {
+  .grid,.studio-grid { grid-template-columns:1fr; }
+  .wrap { padding:15px 11px 30px; }
+  .panel { padding:17px; }
+  .bank-card { min-height:205px; }
+  .balance { font-size:38px; }
 }
 </style>
 </head>
@@ -335,13 +204,13 @@ button:disabled {
 <body>
 <div class="wrap">
 
-<header class="top">
+<header>
   <div class="brand">
     <div class="logo">✦</div>
     <div>
       STAR BANK
-      <div style="font-size:11px;font-weight:600;letter-spacing:1.6px;color:#8490a6;margin-top:2px">
-        VIRTUAL MONEY • PLAY MODE
+      <div style="font-size:10px;letter-spacing:2px;color:#99a8c2;margin-top:3px">
+        VIRTUAL MONEY · PLAY MODE
       </div>
     </div>
   </div>
@@ -350,214 +219,226 @@ button:disabled {
 
 <div id="notice" class="notice"></div>
 
+<!-- LOGIN AND ACCOUNT CREATION -->
 <section id="authView" class="grid">
-
-  <div class="card hero">
-    <div class="eyebrow">Your money, your universe</div>
-
-    <div style="font-size:31px;font-weight:850;line-height:1.15;margin-top:20px;max-width:340px">
-      A simpler way to move virtual money.
-    </div>
-
-    <p class="sub" style="max-width:340px">
-      Create a demo account, keep your balance saved, and send money to other STAR BANK members.
+  <div class="panel hero">
+    <div style="font-size:12px;letter-spacing:2px">YOUR MONEY, YOUR UNIVERSE</div>
+    <h1 style="font-size:35px;line-height:1.15">A new way to move virtual money.</h1>
+    <p class="muted" style="color:#e3e8ff">
+      Create your account, collect virtual money, send payments and design your own card.
     </p>
   </div>
 
-  <div class="card">
-
+  <div class="panel">
     <div class="tabs">
       <button id="loginTab" class="active" type="button">Log in</button>
       <button id="signupTab" type="button">Create account</button>
     </div>
 
     <form id="authForm">
-
       <div id="usernameWrap" class="hidden">
-        <label class="label" for="username">Choose a username</label>
-        <input class="field" id="username" maxlength="24"
-          autocomplete="username" placeholder="e.g. Starberry">
+        <label for="username">USERNAME</label>
+        <input id="username" maxlength="24" placeholder="e.g. Starberry">
       </div>
 
-      <label class="label" for="email">Email address</label>
-      <input class="field" id="email" type="email" required
-        autocomplete="email" placeholder="you@example.com">
+      <label for="email">EMAIL ADDRESS</label>
+      <input id="email" type="email" autocomplete="email" required placeholder="you@example.com">
 
-      <label class="label" for="password">Password</label>
-      <input class="field" id="password" type="password" required
-        minlength="6" autocomplete="current-password"
-        placeholder="At least 6 characters">
+      <label for="password">PASSWORD</label>
+      <input id="password" type="password" minlength="6" required autocomplete="current-password" placeholder="At least 6 characters">
 
       <button id="authSubmit" class="full" type="submit">Log in</button>
     </form>
 
-    <p class="muted">
-      This is a fictional virtual-money project, not a real bank.
-      Use a password you don't use anywhere else.
-    </p>
-
+    <p class="muted">Your virtual balance is saved to your STAR BANK account.</p>
   </div>
 </section>
 
+<!-- MAIN DASHBOARD -->
 <section id="appView" class="hidden">
 
   <div class="grid">
-    <div>
-
-      <div class="card hero">
-        <div class="eyebrow">Available balance</div>
-        <div id="balance" class="balance">— ST</div>
-        <div class="sub">STAR TOKENS · saved to your account</div>
-
-        <div class="hero-actions">
-          <button type="button" id="refreshBtn">↻ Refresh</button>
-          <button type="button" id="signoutBtn">Log out</button>
-        </div>
+    <div class="panel hero">
+      <div style="font-size:12px;letter-spacing:2px">YOUR AVAILABLE BALANCE</div>
+      <div id="balance" class="balance">0 ST</div>
+      <div class="muted" style="color:#e3e8ff">
+        Account holder: <strong id="accountUsername">Member</strong>
       </div>
-
-      <div class="card" style="margin-top:18px">
-        <h2 class="section-title">Send virtual money</h2>
-
-        <form id="transferForm">
-
-          <label class="label" for="receiver">Recipient username</label>
-          <input id="receiver" class="field" required maxlength="24"
-            placeholder="e.g. Rex">
-
-          <div class="row">
-            <div>
-              <label class="label" for="amount">Amount (ST)</label>
-              <input id="amount" class="field" type="number"
-                min="1" step="1" required placeholder="100">
-            </div>
-
-            <div style="display:flex;align-items:end;padding-bottom:13px">
-              <button class="full" id="sendBtn" type="submit">Send money</button>
-            </div>
-          </div>
-        </form>
-
-        <p class="muted">Transfers are recorded in your demo transaction history.</p>
+      <div class="muted" style="color:#e3e8ff;margin-top:6px">
+        Account ID: <span id="accountId">—</span>
       </div>
-
+      <div class="actions">
+        <button id="refreshBtn" type="button">↻ Refresh</button>
+        <button id="signoutBtn" type="button">Log out</button>
+      </div>
     </div>
 
-    <div>
+    <div class="panel">
+      <h2>💸 Send virtual money</h2>
+      <form id="transferForm">
+        <label for="receiver">RECIPIENT USERNAME</label>
+        <input id="receiver" required maxlength="24" placeholder="Their username">
 
-      <div class="card">
-        <h2 class="section-title">Your account</h2>
+        <label for="amount">AMOUNT (ST)</label>
+        <input id="amount" type="number" min="1" step="1" required placeholder="100">
 
-        <div class="statline">
-          <span class="muted">Username</span>
-          <strong id="accountUsername">—</strong>
-        </div>
-
-        <div class="statline">
-          <span class="muted">Account status</span>
-          <strong>Active</strong>
-        </div>
-
-        <div class="statline">
-          <span class="muted">Account ID</span>
-          <strong id="accountId">—</strong>
-        </div>
+        <button id="sendBtn" class="full" type="submit">Send payment ↗</button>
+      </form>
+      <div class="actions">
+        <button id="scanBtn" type="button" class="secondary">📷 Scan QR</button>
       </div>
-
-      <div class="card" style="margin-top:18px">
-        <h2 class="section-title">Receive with QR</h2>
-
-        <p class="muted">
-          Let another member scan this code to get your username.
-        </p>
-
-        <div style="text-align:center;margin:16px 0">
-          <div id="qrcode"></div>
-        </div>
-
-        <div class="row">
-          <button type="button" class="secondary" id="downloadQr">Save QR</button>
-          <button type="button" class="secondary" id="scanBtn">Scan QR</button>
-        </div>
-
-        <div id="scannerWrap" class="hidden">
-          <div id="reader"></div>
-          <button type="button" class="danger full" id="stopCamera">Stop camera</button>
-        </div>
+      <div id="scannerWrap" class="hidden">
+        <div id="reader"></div>
+        <button id="stopCamera" class="danger full" type="button">Stop camera</button>
       </div>
-
     </div>
   </div>
 
-  <div class="card transactions">
-    <h2 class="section-title">Recent activity</h2>
-    <div id="transactions">
-      <p class="muted">Loading transactions…</p>
+  <div class="grid" style="margin-top:16px">
+    <div class="panel">
+      <h2>📥 Receive money</h2>
+      <p class="muted">Let another STAR BANK member scan this QR code to find your username.</p>
+      <div id="qrcode"></div>
+      <div class="actions">
+        <button id="downloadQr" type="button">Download QR</button>
+      </div>
     </div>
+
+    <div class="panel">
+      <h2>Account details</h2>
+      <div class="stat"><span>Username</span><strong id="detailsUsername">—</strong></div>
+      <div class="stat"><span>Currency</span><strong>ST · Star Tokens</strong></div>
+      <div class="stat"><span>Account type</span><strong>Virtual account</strong></div>
+      <div class="stat"><span>Security</span><strong>Supabase login</strong></div>
+    </div>
+  </div>
+
+  <!-- CARD DESIGNER -->
+  <div class="panel studio">
+    <h2>💳 Card Studio</h2>
+    <p class="muted">Create a virtual card design. These are decorative demo cards, not real payment cards.</p>
+
+    <div class="studio-grid">
+      <div>
+        <div id="bankCard" class="bank-card">
+          <div class="card-top">
+            <div class="chip"></div>
+            <span id="previewType" class="card-type">DEBIT</span>
+          </div>
+          <div class="card-number">✦ ✦ ✦ ✦ &nbsp; 2048</div>
+          <div class="card-bottom">
+            <div>
+              <div style="font-size:9px;opacity:.75;letter-spacing:1.5px;margin-bottom:5px">CARDHOLDER</div>
+              <div id="previewHolder" class="card-holder">STAR MEMBER</div>
+            </div>
+            <div id="previewBrand" class="card-brand">STAR</div>
+          </div>
+        </div>
+
+        <div class="metrics">
+          <div class="metric"><span>Card type</span><strong id="metricType">Debit</strong></div>
+          <div class="metric"><span>Design</span><strong id="metricDesign">Aurora</strong></div>
+          <div class="metric"><span>Status</span><strong style="color:#42d3a0">Active</strong></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="control">
+          <label class="control-title">CHOOSE CARD TYPE</label>
+          <div class="segmented">
+            <button type="button" data-type="debit" class="selected">💳 Debit</button>
+            <button type="button" data-type="credit">✨ Credit</button>
+          </div>
+        </div>
+
+        <div class="control">
+          <label class="control-title" for="cardName">NAME ON CARD</label>
+          <input id="cardName" maxlength="24" value="STAR MEMBER" placeholder="Your name">
+        </div>
+
+        <div class="control">
+          <label class="control-title">COLOUR PALETTE</label>
+          <div class="swatches">
+            <button class="swatch selected" type="button" title="Aurora" data-colors="#5a35dc,#10b9c9" style="background:linear-gradient(135deg,#5a35dc,#10b9c9)"></button>
+            <button class="swatch" type="button" title="Midnight" data-colors="#101827,#475569" style="background:linear-gradient(135deg,#101827,#475569)"></button>
+            <button class="swatch" type="button" title="Ruby" data-colors="#a31245,#ff6b6b" style="background:linear-gradient(135deg,#a31245,#ff6b6b)"></button>
+            <button class="swatch" type="button" title="Ocean" data-colors="#075985,#22d3ee" style="background:linear-gradient(135deg,#075985,#22d3ee)"></button>
+            <button class="swatch" type="button" title="Emerald" data-colors="#065f46,#34d399" style="background:linear-gradient(135deg,#065f46,#34d399)"></button>
+            <button class="swatch" type="button" title="Gold" data-colors="#713f12,#fbbf24" style="background:linear-gradient(135deg,#713f12,#fbbf24)"></button>
+            <button class="swatch" type="button" title="Rose" data-colors="#9d174d,#f9a8d4" style="background:linear-gradient(135deg,#9d174d,#f9a8d4)"></button>
+            <button class="swatch" type="button" title="Ice" data-colors="#334155,#cbd5e1" style="background:linear-gradient(135deg,#334155,#cbd5e1)"></button>
+          </div>
+        </div>
+
+        <div class="control">
+          <label class="control-title">CARD FINISH</label>
+          <div class="designs">
+            <button type="button" data-design="aurora" class="selected">🌌 Aurora</button>
+            <button type="button" data-design="neon">⚡ Neon</button>
+            <button type="button" data-design="glass">◇ Glass</button>
+            <button type="button" data-design="minimal">◻ Minimal</button>
+            <button type="button" data-design="orbit">🪐 Orbit</button>
+            <button type="button" data-design="luxury">✦ Luxury</button>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="saveCard" type="button">Save design</button>
+          <button id="resetCard" type="button" class="secondary">Reset</button>
+        </div>
+        <p id="cardStatus" class="muted" aria-live="polite">Choose a style and make it yours.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:18px">
+    <h2>Recent activity</h2>
+    <div id="transactions"><p class="muted">Loading transactions…</p></div>
   </div>
 
 </section>
 
-<div class="foot">
-  STAR BANK · Unofficial virtual-money demo · No real currency or banking services
-</div>
-
+<footer>STAR BANK · Unofficial virtual-money demo · No real currency or banking services</footer>
 </div>
 
 <script>
-// STAR BANK SUPABASE CONNECTION
+/* SUPABASE CONNECTION */
 const SUPABASE_URL = "https://mlghrbbqojrzqssezotp.supabase.co";
 const SUPABASE_KEY = "sb_publishable_6LCTWzJPhQXZXJq3y9Bvcw_1upiBrXJ";
-
-const supa = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $ = id => document.getElementById(id);
-
 let mode = "login";
 let account = null;
 let scanner = null;
 
-function notice(message, isError = false) {
+function notice(message, error=false) {
   const el = $("notice");
   el.textContent = message;
-  el.style.background = isError ? "#3a202a" : "#3a3018";
-  el.style.color = isError ? "#ffabb4" : "#ffe19a";
+  el.style.background = error ? "#3a202a" : "#3a3018";
+  el.style.color = error ? "#ffabb4" : "#ffe19a";
   el.classList.add("show");
 }
-
-function clearNotice() {
-  $("notice").classList.remove("show");
-}
+function clearNotice() { $("notice").classList.remove("show"); }
 
 function setMode(next) {
   mode = next;
-
   $("loginTab").classList.toggle("active", mode === "login");
   $("signupTab").classList.toggle("active", mode === "signup");
-
   $("usernameWrap").classList.toggle("hidden", mode !== "signup");
   $("username").required = mode === "signup";
-
-  $("authSubmit").textContent =
-    mode === "login" ? "Log in" : "Create account";
-
-  $("password").autocomplete =
-    mode === "login" ? "current-password" : "new-password";
-
+  $("authSubmit").textContent = mode === "login" ? "Log in" : "Create account";
+  $("password").autocomplete = mode === "login" ? "current-password" : "new-password";
   clearNotice();
 }
-
 $("loginTab").onclick = () => setMode("login");
 $("signupTab").onclick = () => setMode("signup");
 
-$("authForm").addEventListener("submit", async event => {
-  event.preventDefault();
+$("authForm").addEventListener("submit", async e => {
+  e.preventDefault();
   clearNotice();
-
-  const button = $("authSubmit");
-  button.disabled = true;
+  const btn = $("authSubmit");
+  btn.disabled = true;
 
   try {
     const email = $("email").value.trim();
@@ -567,61 +448,42 @@ $("authForm").addEventListener("submit", async event => {
       const username = $("username").value.trim();
 
       if (!/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
-        throw new Error(
-          "Username must be 3–24 characters using letters, numbers, or underscores."
-        );
+        throw new Error("Username must be 3–24 characters using letters, numbers or underscores.");
       }
 
       localStorage.setItem("starbank_pending_username", username);
 
-      const { data, error } = await supa.auth.signUp({
+      const {data,error} = await supa.auth.signUp({
         email,
-        password
+        password,
+        options: {emailRedirectTo: location.origin + location.pathname}
       });
 
       if (error) throw error;
 
       if (!data.session) {
+        notice("Account created! Check your email for a confirmation link, then log in.");
         setMode("login");
-
-        notice(
-          "Account created! If Supabase asks you to confirm your email, check your inbox first. Then log in using the same email and password. Your chosen username is saved on this device."
-        );
       } else {
         await finishLogin();
       }
-
     } else {
-      const { error } = await supa.auth.signInWithPassword({
-        email,
-        password
-      });
-
+      const {error} = await supa.auth.signInWithPassword({email,password});
       if (error) throw error;
-
       await finishLogin();
     }
-
-  } catch (error) {
-    notice(error.message || "Something went wrong.", true);
+  } catch (err) {
+    notice(err.message || "Something went wrong.", true);
   } finally {
-    button.disabled = false;
+    btn.disabled = false;
   }
 });
 
 async function ensureAccount() {
-  const { data: userData, error: userError } =
-    await supa.auth.getUser();
+  const {data:{user}} = await supa.auth.getUser();
+  if (!user) throw new Error("Please log in again.");
 
-  if (userError) throw userError;
-
-  const user = userData.user;
-
-  if (!user) {
-    throw new Error("Please log in again.");
-  }
-
-  let { data, error } = await supa
+  let {data,error} = await supa
     .from("bank_accounts")
     .select("id, username, balance, user_id")
     .eq("user_id", user.id)
@@ -630,60 +492,42 @@ async function ensureAccount() {
   if (error) throw error;
 
   if (!data) {
-    const username =
-      localStorage.getItem("starbank_pending_username");
-
+    const username = localStorage.getItem("starbank_pending_username");
     if (!username) {
-      throw new Error(
-        "No STAR BANK account is linked to this login. If this is a new account, log out and register again with a username."
-      );
+      throw new Error("No STAR BANK account is linked. Sign up with a username first.");
     }
 
-    const { error: createError } = await supa.rpc(
-      "create_bank_account",
-      { p_username: username }
-    );
-
-    if (createError) throw createError;
+    const {error:makeError} = await supa.rpc("create_bank_account", {
+      p_username: username
+    });
+    if (makeError) throw makeError;
 
     localStorage.removeItem("starbank_pending_username");
 
-    const result = await supa
-      .from("bank_accounts")
+    const result = await supa.from("bank_accounts")
       .select("id, username, balance, user_id")
       .eq("user_id", user.id)
       .maybeSingle();
 
     if (result.error) throw result.error;
-
     data = result.data;
   }
 
-  if (!data) {
-    throw new Error("Account setup did not finish. Please refresh.");
-  }
-
+  if (!data) throw new Error("Account setup did not finish. Refresh and try again.");
   account = data;
 }
 
 async function finishLogin() {
   await ensureAccount();
-
   $("authView").classList.add("hidden");
   $("appView").classList.remove("hidden");
-
   await loadAccount();
 }
 
 async function loadAccount() {
   clearNotice();
 
-  const { data: sessionData, error: sessionError } =
-    await supa.auth.getSession();
-
-  if (sessionError) throw sessionError;
-
-  const session = sessionData.session;
+  const {data:{session}} = await supa.auth.getSession();
 
   if (!session) {
     $("authView").classList.remove("hidden");
@@ -694,8 +538,7 @@ async function loadAccount() {
   try {
     await ensureAccount();
 
-    const { data, error } = await supa
-      .from("bank_accounts")
+    const {data,error} = await supa.from("bank_accounts")
       .select("id, username, balance, user_id")
       .eq("user_id", session.user.id)
       .single();
@@ -703,141 +546,109 @@ async function loadAccount() {
     if (error) throw error;
 
     account = data;
-
-    $("balance").textContent =
-      Number(account.balance).toLocaleString() + " ST";
-
+    $("balance").textContent = Number(account.balance).toLocaleString() + " ST";
     $("accountUsername").textContent = account.username;
-
-    $("accountId").textContent =
-      String(account.id).slice(0, 8) + "…";
+    $("detailsUsername").textContent = account.username;
+    $("accountId").textContent = String(account.id).slice(0,8) + "…";
 
     $("qrcode").innerHTML = "";
-
     new QRCode($("qrcode"), {
       text: "STARBANK:" + account.username,
       width: 124,
       height: 124,
       colorDark: "#14213d",
-      colorLight: "#ffffff"
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.M
     });
 
     await loadTransactions();
-
-  } catch (error) {
-    notice(error.message || "Could not load your account.", true);
+  } catch (err) {
+    notice(err.message || "Could not load account.", true);
   }
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
 }
 
 async function loadTransactions() {
   const box = $("transactions");
 
-  const { data, error } = await supa
-    .from("bank_transactions")
+  const {data,error} = await supa.from("bank_transactions")
     .select("sender_id, receiver_id, amount, created_at")
-    .order("created_at", { ascending: false })
+    .order("created_at", {ascending:false})
     .limit(20);
 
   if (error) {
-    box.textContent = "Could not load transaction history: " + error.message;
+    box.textContent = "Could not load activity: " + error.message;
     return;
   }
 
   if (!data || !data.length) {
-    box.innerHTML =
-      '<p class="muted">No transactions yet. Send your first virtual payment!</p>';
+    box.innerHTML = '<p class="muted">No transactions yet. Send your first virtual payment!</p>';
     return;
   }
 
-  const ids = [
-    ...new Set(
-      data.flatMap(t => [t.sender_id, t.receiver_id]).filter(Boolean)
-    )
-  ];
-
+  const ids = [...new Set(data.flatMap(t => [t.sender_id,t.receiver_id]).filter(Boolean))];
   const names = {};
 
   if (ids.length) {
-    const { data: accounts } = await supa
-      .from("bank_accounts")
-      .select("id, username")
-      .in("id", ids);
+    const {data:accounts} = await supa.from("bank_accounts")
+      .select("id,username").in("id",ids);
 
-    (accounts || []).forEach(a => {
-      names[a.id] = a.username;
-    });
+    (accounts || []).forEach(a => names[a.id] = a.username);
   }
 
   box.innerHTML = data.map(t => {
     const sent = t.sender_id === account.id;
-
-    const other = sent
-      ? names[t.receiver_id] || "Member"
-      : names[t.sender_id] || "Member";
-
+    const other = sent ? names[t.receiver_id] || "Member" : names[t.sender_id] || "Member";
     const amount = Number(t.amount) || 0;
 
     return `
       <div class="tx">
         <div class="tx-icon">${sent ? "↗" : "↙"}</div>
-
         <div class="tx-main">
           <strong>${sent ? "Sent to" : "Received from"} ${escapeHtml(other)}</strong>
           <small>${new Date(t.created_at).toLocaleString()}</small>
         </div>
-
         <div class="amount ${sent ? "negative" : "positive"}">
           ${sent ? "−" : "+"}${amount.toLocaleString()} ST
         </div>
-      </div>
-    `;
+      </div>`;
   }).join("");
 }
 
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  }[char]));
-}
-
-$("transferForm").addEventListener("submit", async event => {
-  event.preventDefault();
+$("transferForm").addEventListener("submit", async e => {
+  e.preventDefault();
   clearNotice();
 
   const username = $("receiver").value.trim();
   const amount = Number($("amount").value);
-  const button = $("sendBtn");
+  const btn = $("sendBtn");
 
   if (!Number.isSafeInteger(amount) || amount < 1) {
     notice("Enter a whole-number amount greater than zero.", true);
     return;
   }
 
-  if (
-    username.toLowerCase() ===
-    String(account?.username).toLowerCase()
-  ) {
+  if (username.toLowerCase() === String(account?.username).toLowerCase()) {
     notice("You cannot send money to your own account.", true);
     return;
   }
 
   if (amount > Number(account?.balance)) {
-    notice("You do not have enough virtual money.", true);
+    notice("You do not have enough virtual money for that transfer.", true);
     return;
   }
 
-  if (!confirm(`Send ${amount.toLocaleString()} ST to ${username}?`)) {
-    return;
-  }
+  if (!confirm(`Send ${amount.toLocaleString()} ST to ${username}?`)) return;
 
-  button.disabled = true;
+  btn.disabled = true;
 
   try {
-    const { error } = await supa.rpc("transfer_money", {
+    const {error} = await supa.rpc("transfer_money", {
       p_receiver_username: username,
       p_amount: amount
     });
@@ -845,15 +656,12 @@ $("transferForm").addEventListener("submit", async event => {
     if (error) throw error;
 
     $("amount").value = "";
-
     notice("Transfer complete!");
-
     await loadAccount();
-
-  } catch (error) {
-    notice(error.message || "Transfer failed.", true);
+  } catch (err) {
+    notice(err.message || "Transfer failed.", true);
   } finally {
-    button.disabled = false;
+    btn.disabled = false;
   }
 });
 
@@ -861,113 +669,197 @@ $("refreshBtn").onclick = loadAccount;
 
 $("signoutBtn").onclick = async () => {
   await stopScanner();
-
   await supa.auth.signOut();
-
   account = null;
-
   $("appView").classList.add("hidden");
   $("authView").classList.remove("hidden");
-
   clearNotice();
 };
 
 $("downloadQr").onclick = () => {
-  const image = $("qrcode").querySelector("img");
-
-  if (!image) {
+  const img = $("qrcode").querySelector("img");
+  if (!img) {
     notice("Your QR code is not ready yet.", true);
     return;
   }
 
-  const link = document.createElement("a");
-
-  link.href = image.src;
-  link.download = "star-bank-qr.png";
-  link.click();
+  const a = document.createElement("a");
+  a.href = img.src;
+  a.download = "star-bank-qr.png";
+  a.click();
 };
 
 $("scanBtn").onclick = async () => {
   $("scannerWrap").classList.remove("hidden");
 
   try {
-    if (!scanner) {
-      scanner = new Html5Qrcode("reader");
-    }
+    if (!scanner) scanner = new Html5Qrcode("reader");
 
     await scanner.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: { width: 220, height: 220 } },
-
+      {facingMode:"environment"},
+      {fps:10,qrbox:{width:220,height:220}},
       decoded => {
-        let username = decoded.trim();
+        let name = decoded.trim();
+        if (name.startsWith("STARBANK:")) name = name.slice(9);
 
-        if (username.startsWith("STARBANK:")) {
-          username = username.slice(9);
-        }
-
-        if (/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
-          $("receiver").value = username;
-          notice("Recipient filled in! Check the username before sending.");
+        if (/^[a-zA-Z0-9_]{3,24}$/.test(name)) {
+          $("receiver").value = name;
         } else {
-          notice("That is not a STAR BANK payment QR code.", true);
+          notice("That QR code is not a STAR BANK payment code.", true);
         }
 
         stopScanner();
       },
-
       () => {}
     );
-
-  } catch (error) {
-    notice(
-      "Camera could not start. Allow camera access and open the website over HTTPS.",
-      true
-    );
+  } catch (err) {
+    notice("Camera could not start. Allow camera access and open the site over HTTPS.", true);
   }
 };
 
 async function stopScanner() {
   if (scanner && scanner.isScanning) {
-    try {
-      await scanner.stop();
-    } catch (error) {}
+    try { await scanner.stop(); } catch (e) {}
   }
-
   $("scannerWrap").classList.add("hidden");
 }
-
 $("stopCamera").onclick = stopScanner;
 
-supa.auth.onAuthStateChange((event, session) => {
+/* VIRTUAL CARD DESIGNER */
+(function() {
+  const preview = $("bankCard");
+  const holder = $("previewHolder");
+  const typeText = $("previewType");
+
+  const defaults = {
+    type:"debit",
+    name:"STAR MEMBER",
+    colors:["#5a35dc","#10b9c9"],
+    design:"aurora"
+  };
+
+  let settings = {...defaults, colors:[...defaults.colors]};
+
+  const effects = {
+    aurora:"",
+    neon:"saturate(1.3) contrast(1.08)",
+    glass:"saturate(.8)",
+    minimal:"saturate(.65)",
+    orbit:"hue-rotate(12deg) saturate(1.15)",
+    luxury:"saturate(.85) contrast(1.12)"
+  };
+
+  function render() {
+    preview.style.setProperty("--c1",settings.colors[0]);
+    preview.style.setProperty("--c2",settings.colors[1]);
+    preview.style.filter = effects[settings.design] || "";
+    preview.style.background = `linear-gradient(125deg,${settings.colors[0]},${settings.colors[1]})`;
+    preview.style.boxShadow = settings.design === "neon"
+      ? `0 0 0 1px ${settings.colors[1]}88,0 0 28px ${settings.colors[1]}40`
+      : settings.design === "luxury"
+      ? "0 18px 40px #0005,inset 0 0 0 1px #f5d98c88"
+      : "0 18px 40px #0005";
+
+    if (settings.design === "minimal") {
+      preview.style.background = `linear-gradient(135deg,${settings.colors[0]},${settings.colors[0]})`;
+    }
+
+    holder.textContent = (settings.name || "STAR MEMBER").toUpperCase();
+    typeText.textContent = settings.type.toUpperCase();
+    $("metricType").textContent = settings.type[0].toUpperCase() + settings.type.slice(1);
+    $("metricDesign").textContent = settings.design[0].toUpperCase() + settings.design.slice(1);
+
+    document.querySelectorAll("[data-type]").forEach(b =>
+      b.classList.toggle("selected",b.dataset.type === settings.type)
+    );
+
+    document.querySelectorAll("[data-colors]").forEach(b =>
+      b.classList.toggle("selected",b.dataset.colors.split(",").join("|") === settings.colors.join("|"))
+    );
+
+    document.querySelectorAll("[data-design]").forEach(b =>
+      b.classList.toggle("selected",b.dataset.design === settings.design)
+    );
+  }
+
+  document.querySelectorAll("[data-type]").forEach(b =>
+    b.addEventListener("click",() => {
+      settings.type = b.dataset.type;
+      render();
+    })
+  );
+
+  document.querySelectorAll("[data-colors]").forEach(b =>
+    b.addEventListener("click",() => {
+      settings.colors = b.dataset.colors.split(",");
+      render();
+    })
+  );
+
+  document.querySelectorAll("[data-design]").forEach(b =>
+    b.addEventListener("click",() => {
+      settings.design = b.dataset.design;
+      render();
+    })
+  );
+
+  $("cardName").addEventListener("input",e => {
+    settings.name = e.target.value.slice(0,24);
+    render();
+  });
+
+  $("saveCard").onclick = () => {
+    try {
+      localStorage.setItem("starbank_card_design",JSON.stringify(settings));
+      $("cardStatus").textContent = "✓ Your design is saved on this device.";
+    } catch (e) {
+      $("cardStatus").textContent = "Could not save the design.";
+    }
+  };
+
+  $("resetCard").onclick = () => {
+    settings = {...defaults,colors:[...defaults.colors]};
+    $("cardName").value = settings.name;
+    render();
+    $("cardStatus").textContent = "Design reset. Save it to keep it.";
+  };
+
+  try {
+    const saved = JSON.parse(localStorage.getItem("starbank_card_design") || "null");
+
+    if (
+      saved &&
+      ["debit","credit"].includes(saved.type) &&
+      Array.isArray(saved.colors) &&
+      saved.colors.length === 2 &&
+      ["aurora","neon","glass","minimal","orbit","luxury"].includes(saved.design)
+    ) {
+      settings = {...defaults,...saved};
+      $("cardName").value = settings.name || defaults.name;
+      $("cardStatus").textContent = "✓ Your saved design is loaded.";
+    }
+  } catch (e) {}
+
+  render();
+})();
+
+supa.auth.onAuthStateChange((event,session) => {
   if (event === "SIGNED_OUT") {
     $("authView").classList.remove("hidden");
     $("appView").classList.add("hidden");
-
   } else if (event === "SIGNED_IN" && session) {
-    setTimeout(() => {
-      finishLogin().catch(error => {
-        notice(error.message || "Account setup failed.", true);
-      });
-    }, 0);
+    setTimeout(() => finishLogin().catch(err => notice(err.message || "Account setup failed.",true)),0);
   }
 });
 
 (async () => {
   try {
-    const { data, error } = await supa.auth.getSession();
-
-    if (error) throw error;
-
-    if (data.session) {
-      await loadAccount();
-    }
-
-  } catch (error) {
-    notice(error.message || "Please check your Supabase setup.", true);
+    const {data:{session}} = await supa.auth.getSession();
+    if (session) await loadAccount();
+  } catch (err) {
+    notice(err.message || "Please check your Supabase setup.",true);
   }
 })();
 </script>
-
 </body>
 </html>
