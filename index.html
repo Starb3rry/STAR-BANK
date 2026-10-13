@@ -3,151 +3,244 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>STAR BANK</title>
+<meta name="theme-color" content="#080b14">
+<title>STAR BANK — Virtual Banking</title>
+
+<!-- QR code generator -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- QR camera scanner -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
 <style>
+:root {
+    --bg: #080b14;
+    --panel: #101522;
+    --panel2: #151c2c;
+    --line: #252e43;
+    --text: #f4f7ff;
+    --muted: #8994ac;
+    --blue: #6595ff;
+    --purple: #a78bfa;
+    --green: #4adea2;
+    --red: #ff7185;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-    background: #f3f6fb;
-    color: #18243b;
+    background:
+        radial-gradient(ellipse at 50% -20%, #1b2c55 0%, transparent 55%),
+        var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    min-height: 100vh;
 }
 
-header {
-    background: #14264b;
-    color: white;
-    padding: 22px;
-    text-align: center;
+button, input, select {
+    font: inherit;
 }
 
-.logo {
-    font-size: 27px;
+button {
+    cursor: pointer;
+    transition: transform .15s, opacity .15s;
+}
+
+button:active {
+    transform: scale(.98);
+}
+
+button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.topbar {
+    border-bottom: 1px solid #ffffff10;
+    background: #080b14eF;
+    padding: 18px 22px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(18px);
+}
+
+.topinner {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.brand {
+    font-size: 20px;
     font-weight: 900;
     letter-spacing: 2px;
 }
 
-header p {
-    color: #c8d5f0;
-    margin-bottom: 0;
+.brand span {
+    color: var(--blue);
+}
+
+.tagline {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 5px;
+    letter-spacing: 1px;
 }
 
 main {
-    max-width: 480px;
-    margin: 25px auto;
-    padding: 16px;
+    width: min(1100px, 100%);
+    margin: auto;
+    padding: 28px 18px 60px;
 }
 
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 22px;
-    margin-bottom: 18px;
-    box-shadow: 0 5px 20px #15284b0d;
+h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    letter-spacing: -1.5px;
+    margin: 0 0 10px;
 }
 
 h2 {
-    margin-top: 0;
-    font-size: 20px;
+    font-size: 19px;
+    margin: 0 0 15px;
 }
 
-input, button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 10px;
-    border-radius: 10px;
-    font-size: 16px;
+h3 {
+    font-size: 15px;
+    margin: 0 0 12px;
 }
 
-input {
-    border: 1px solid #d8deea;
-    background: #fafbfe;
-}
-
-button {
-    border: none;
-    background: #2455d6;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:active {
-    opacity: 0.8;
-}
-
-.secondary {
-    background: #eaf0ff;
-    color: #2455d6;
-}
-
-.danger {
-    background: #fff0f0;
-    color: #c03939;
-}
-
-.balance {
-    background: linear-gradient(135deg, #14264b, #3266d5);
-    color: white;
-    border-radius: 18px;
-    padding: 25px;
-    margin-bottom: 18px;
-}
-
-.balance small {
-    color: #d4e0ff;
-}
-
-.amount {
-    font-size: 36px;
-    font-weight: 800;
-    margin: 12px 0;
-    overflow-wrap: anywhere;
-}
-
-.account-label {
-    color: #d4e0ff;
-    font-size: 13px;
-}
-
-.row {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    align-items: center;
-}
-
-.row button {
-    width: auto;
-    margin-top: 0;
-}
-
-.transaction {
-    padding: 13px 0;
-    border-bottom: 1px solid #edf0f5;
-    overflow-wrap: anywhere;
-}
-
-.transaction:last-child {
-    border-bottom: none;
-}
-
-.positive {
-    color: #16834b;
-    font-weight: bold;
-}
-
-.negative {
-    color: #d04444;
-    font-weight: bold;
+p {
+    line-height: 1.6;
 }
 
 .muted {
-    color: #748096;
+    color: var(--muted);
     font-size: 13px;
+}
+
+.eyebrow {
+    color: var(--blue);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.panel {
+    background: linear-gradient(145deg, #141b2b, #0e1320);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 23px;
+    box-shadow: 0 14px 40px #00000014;
+    min-width: 0;
+    margin-bottom: 18px;
+}
+
+.hero {
+    margin-bottom: 28px;
+}
+
+.hero p {
+    max-width: 560px;
+    color: var(--muted);
+}
+
+.field {
+    margin: 14px 0;
+}
+
+label {
+    display: block;
+    color: #bac5da;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+input, select {
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 11px;
+    background: #090e19;
+    color: var(--text);
+    border: 1px solid #303a50;
+    outline: none;
+    min-height: 46px;
+}
+
+input:focus, select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px #6595ff1b;
+}
+
+.btn {
+    border: 1px solid transparent;
+    border-radius: 11px;
+    padding: 13px 16px;
+    color: white;
+    background: linear-gradient(110deg, #497df1, #805ce9);
+    font-weight: 800;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn.secondary {
+    background: #1a2336;
+    border-color: #303c54;
+}
+
+.btn.ghost {
+    background: transparent;
+    border-color: #303c54;
+}
+
+.btn.danger {
+    background: #351722;
+    border-color: #60303d;
+    color: #ff9cab;
+}
+
+.btn.small {
+    width: auto;
+    padding: 10px 13px;
+    font-size: 12px;
+    margin: 0;
+}
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.tab {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    color: var(--muted);
+    background: #0b101b;
+    font-weight: 700;
+}
+
+.tab.active {
+    background: #1b2b4b;
+    border-color: #466cc1;
+    color: white;
 }
 
 .hidden {
@@ -155,216 +248,925 @@ button:active {
 }
 
 .notice {
-    font-size: 13px;
-    color: #748096;
+    background: #111b2e;
+    border: 1px solid #273b5d;
+    color: #b8c9e9;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 12px;
     line-height: 1.6;
+    margin-top: 16px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.stat {
+    background: #111725;
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    padding: 17px;
+    min-width: 0;
+}
+
+.stat .value {
+    font-size: clamp(16px, 3vw, 23px);
+    font-weight: 850;
+    overflow-wrap: anywhere;
+    margin-top: 8px;
+}
+
+.stat .label {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.bankcard {
+    width: 100%;
+    max-width: 440px;
+    min-height: 245px;
+    border-radius: 20px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    box-shadow: 0 18px 45px #0006;
+    color: white;
+    background: linear-gradient(135deg, #111827, #263c65);
+}
+
+.bankcard::before {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border: 1px solid #ffffff26;
+    border-radius: 50%;
+    right: -80px;
+    top: -95px;
+    z-index: -1;
+}
+
+.bankcard::after {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ffffff1a;
+    border-radius: 50%;
+    right: -25px;
+    top: -30px;
+    z-index: -1;
+}
+
+.bankcard[data-design="minimal"]::before,
+.bankcard[data-design="minimal"]::after {
+    display: none;
+}
+
+.bankcard[data-design="neon"] {
+    box-shadow: 0 0 35px #8065ff25;
+}
+
+.bankcard[data-design="luxury"] {
+    border: 1px solid #e6cc8c;
+}
+
+.cardtop, .cardbottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.cardbrand {
+    font-weight: 900;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+
+.cardtype {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: .85;
+}
+
+.chip {
+    width: 42px;
+    height: 31px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, #f5e2a1, #b89d55);
+    margin-top: 25px;
+    margin-bottom: 17px;
+    border: 1px solid #fff6;
+}
+
+.cardnumber {
+    font-size: clamp(15px, 3vw, 20px);
+    letter-spacing: 2px;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+    margin-bottom: 24px;
+}
+
+.cardholder {
+    font-size: 13px;
+    font-weight: 750;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+.cardexpiry {
+    font-size: 11px;
+    opacity: .85;
+    margin-top: 5px;
+}
+
+.cardbottom {
+    align-items: flex-end;
+}
+
+.cardbottom .cardtype {
+    text-align: right;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 22px 0;
+}
+
+.action {
+    padding: 17px 8px;
+    border: 1px solid var(--line);
+    background: #111827;
+    color: white;
+    border-radius: 15px;
+    font-weight: 750;
+    font-size: 12px;
+}
+
+.action .icon {
+    display: block;
+    font-size: 23px;
+    margin-bottom: 8px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.row strong {
+    overflow-wrap: anywhere;
+}
+
+.transaction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 0;
+    border-bottom: 1px solid #ffffff0d;
+}
+
+.transaction:last-child {
+    border-bottom: 0;
+}
+
+.txamount {
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.positive {
+    color: var(--green);
+}
+
+.negative {
+    color: var(--red);
+}
+
+.qrwrap {
+    background: white;
+    padding: 15px;
+    border-radius: 14px;
+    width: fit-content;
+    margin: 16px auto;
+}
+
+.qrwrap img, .qrwrap canvas {
+    display: block;
+    max-width: 100%;
+}
+
+.center {
+    text-align: center;
+}
+
+.coloroptions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.colorpick {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 3px solid #ffffff40;
+    padding: 0;
+}
+
+.colorpick.selected {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
+
+.scannerbox {
+    max-width: 430px;
+    margin: auto;
+}
+
+#reader {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 14px;
+    border: 1px solid #3b4966;
+    background: #05070c;
+}
+
+#reader video {
+    border-radius: 12px;
+}
+
+#reader__dashboard_section_csr button,
+#reader__dashboard_section_swaplink {
+    color: #111;
+    padding: 8px;
+    margin: 5px;
 }
 
 footer {
     text-align: center;
-    color: #8993a6;
-    font-size: 12px;
-    padding: 20px;
+    color: #68748b;
+    padding: 25px 15px 40px;
+    font-size: 11px;
+}
+
+@media(max-width: 650px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .stats .stat:last-child {
+        grid-column: 1 / -1;
+    }
+
+    main {
+        padding: 22px 14px 45px;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .bankcard {
+        min-height: 225px;
+        padding: 20px;
+    }
+}
+
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    body * {
+        visibility: hidden !important;
+    }
+
+    #printCard, #printCard * {
+        visibility: visible !important;
+    }
+
+    #printCard {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 10px;
+    }
+
+    #printCard .bankcard {
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        margin: 0 auto;
+        width: 3.37in;
+        height: 2.125in;
+        min-height: 2.125in;
+    }
+
+    #printCard .qrwrap {
+        margin: 14px auto;
+        border: 1px solid #ddd;
+    }
+
+    #printCard .printnote {
+        color: #333;
+        text-align: center;
+        font-size: 10px;
+    }
+
+    .no-print {
+        display: none !important;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <div class="logo">✦ STAR BANK</div>
-    <p>Your virtual money. Your universe.</p>
+<header class="topbar">
+    <div class="topinner">
+        <div>
+            <div class="brand">✦ STAR<span>BANK</span></div>
+            <div class="tagline">THE VIRTUAL BANKING EXPERIENCE</div>
+        </div>
+        <button id="headerLogout" class="btn ghost small hidden"
+                onclick="logout()">Log out</button>
+    </div>
 </header>
 
 <main>
 
-    <!-- LOGIN AND REGISTRATION -->
-    <section id="auth">
+<!-- AUTHENTICATION -->
+<section id="authSection">
+    <div class="hero">
+        <div class="eyebrow">A NEW WAY TO BANK</div>
+        <h1>Your money.<br>Your universe.</h1>
+        <p>Create your own virtual bank account, design a card, print its QR code, and explore virtual transfers.</p>
+    </div>
 
-        <div class="card">
-            <h2>Welcome back</h2>
-            <p class="muted">Log in to your virtual account.</p>
-
-            <input id="loginUser"
-                   placeholder="Username"
-                   autocomplete="username">
-
-            <input id="loginPin"
-                   type="password"
-                   inputmode="numeric"
-                   placeholder="4-digit PIN"
-                   maxlength="4"
-                   autocomplete="current-password">
-
-            <button onclick="login()">Log In →</button>
+    <div class="panel">
+        <div class="tabs">
+            <button class="tab active" id="loginTab"
+                    onclick="showAuthTab('login')">Log in</button>
+            <button class="tab" id="signupTab"
+                    onclick="showAuthTab('signup')">Create account</button>
         </div>
 
-        <div class="card">
-            <h2>Create an account</h2>
-            <p class="muted">Open your STAR BANK virtual account.</p>
+        <div id="loginForm">
+            <h2>Welcome back.</h2>
+            <p class="muted">Enter your STAR BANK credentials.</p>
 
-            <input id="newUser"
-                   placeholder="Choose a username"
-                   maxlength="20"
-                   autocomplete="username">
-
-            <input id="newPin"
-                   type="password"
-                   inputmode="numeric"
-                   placeholder="Choose a 4-digit PIN"
-                   maxlength="4"
-                   autocomplete="new-password">
-
-            <button onclick="register()">Create Account</button>
-
-            <p class="notice">
-                New accounts start with ৳1,000 in virtual money.
-            </p>
-        </div>
-
-    </section>
-
-    <!-- BANK DASHBOARD -->
-    <section id="dashboard" class="hidden">
-
-        <div class="row" style="margin-bottom:18px">
-            <div>
-                <div class="muted">SIGNED IN AS</div>
-                <strong id="welcomeUser"></strong>
+            <div class="field">
+                <label>USERNAME</label>
+                <input id="loginUsername" autocomplete="username"
+                       maxlength="20" placeholder="Your username">
             </div>
-            <button class="secondary" onclick="logout()">Log Out</button>
+
+            <div class="field">
+                <label>4-DIGIT PIN</label>
+                <input id="loginPin" type="password" inputmode="numeric"
+                       autocomplete="current-password" maxlength="4"
+                       placeholder="••••">
+            </div>
+
+            <button class="btn" onclick="login()">Log in →</button>
         </div>
 
-        <div class="balance">
-            <small>AVAILABLE BALANCE</small>
-            <div class="amount" id="balance">৳1,000</div>
-            <div class="account-label">
-                Virtual account · <span id="accountId"></span>
+        <div id="signupForm" class="hidden">
+            <h2>Create your account.</h2>
+            <p class="muted">Your virtual account starts with ৳1,000.</p>
+
+            <div class="field">
+                <label>USERNAME</label>
+                <input id="signupUsername" maxlength="20"
+                       autocomplete="username" placeholder="e.g. starplayer">
+            </div>
+
+            <div class="field">
+                <label>4-DIGIT PIN</label>
+                <input id="signupPin" type="password" inputmode="numeric"
+                       autocomplete="new-password" maxlength="4"
+                       placeholder="Choose a PIN">
+            </div>
+
+            <div class="field">
+                <label>CARDHOLDER NAME</label>
+                <input id="signupName" maxlength="24"
+                       placeholder="Name displayed on your card">
+            </div>
+
+            <div class="field">
+                <label>CHOOSE YOUR CARD TYPE</label>
+                <select id="signupType">
+                    <option value="debit">Debit card</option>
+                    <option value="credit">Credit card</option>
+                </select>
+            </div>
+
+            <div id="creditChoice" class="field hidden">
+                <label>VIRTUAL CREDIT LIMIT</label>
+                <select id="signupCreditLimit">
+                    <option value="5000">৳5,000</option>
+                    <option value="10000">৳10,000</option>
+                    <option value="20000">৳20,000</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>CHOOSE A CARD COLOUR</label>
+                <div class="coloroptions" id="signupColors">
+                    <button class="colorpick selected" type="button"
+                            aria-label="Midnight blue"
+                            style="background:linear-gradient(135deg,#111827,#263c65)"
+                            data-color="midnight" onclick="pickColor(this)"></button>
+                    <button class="colorpick" type="button"
+                            aria-label="Sapphire"
+                            style="background:linear-gradient(135deg,#0759c7,#21b5ee)"
+                            data-color="sapphire" onclick="pickColor(this)"></button>
+                    <button class="colorpick" type="button"
+                            aria-label="Purple"
+                            style="background:linear-gradient(135deg,#5426a8,#b15cff)"
+                            data-color="purple" onclick="pickColor(this)"></button>
+                    <button class="colorpick" type="button"
+                            aria-label="Emerald"
+                            style="background:linear-gradient(135deg,#075b48,#36c99a)"
+                            data-color="emerald" onclick="pickColor(this)"></button>
+                    <button class="colorpick" type="button"
+                            aria-label="Black"
+                            style="background:linear-gradient(135deg,#090909,#454545)"
+                            data-color="black" onclick="pickColor(this)"></button>
+                    <button class="colorpick" type="button"
+                            aria-label="Rose"
+                            style="background:linear-gradient(135deg,#8d214f,#fa78b6)"
+                            data-color="rose" onclick="pickColor(this)"></button>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>CARD DESIGN</label>
+                <select id="signupDesign">
+                    <option value="orbit">Orbit</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="neon">Neon</option>
+                    <option value="luxury">Luxury</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="register()">Create my account →</button>
+
+            <div class="notice">
+                This creates a fictional virtual-money account. The card is not a real bank or payment card.
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="hidden">
+
+    <div class="hero">
+        <div class="eyebrow">YOUR PERSONAL DASHBOARD</div>
+        <h1>Welcome, <span id="dashName">Star Member</span>.</h1>
+        <p>Your virtual banking universe, all in one place.</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="label">AVAILABLE BALANCE</div>
+            <div class="value" id="dashBalance">৳1,000</div>
+        </div>
+        <div class="stat">
+            <div class="label">CREDIT AVAILABLE</div>
+            <div class="value" id="dashCredit">—</div>
+        </div>
+        <div class="stat">
+            <div class="label">ACCOUNT STATUS</div>
+            <div class="value" style="color:var(--green)">ACTIVE</div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="action" onclick="showPage('transferPage')">
+            <span class="icon">↗</span>Transfer
+        </button>
+        <button class="action" onclick="showPage('scanPage')">
+            <span class="icon">▦</span>Scan card
+        </button>
+        <button class="action" onclick="showPage('myQrPage')">
+            <span class="icon">▣</span>My QR code
+        </button>
+    </div>
+
+    <div class="grid">
+        <div class="panel">
+            <div class="row">
+                <h2>My card</h2>
+                <button class="btn ghost small"
+                        onclick="showPage('customizePage')">Customize</button>
+            </div>
+
+            <div id="dashboardCard"></div>
+
+            <div class="row" style="margin-top:17px">
+                <button class="btn secondary" onclick="showPage('myQrPage')">
+                    View QR
+                </button>
+                <button class="btn" onclick="printCard()">
+                    Print card
+                </button>
             </div>
         </div>
 
-        <div class="card">
-            <h2>↗ Send Money</h2>
-            <p class="muted">
-                Transfer virtual money to another username.
-            </p>
+        <div class="panel">
+            <h2>Recent activity</h2>
+            <div id="recentHistory"></div>
+            <button class="btn ghost" onclick="showPage('historyPage')">
+                Full transaction history
+            </button>
+        </div>
+    </div>
 
-            <input id="recipient"
-                   placeholder="Recipient's username"
-                   maxlength="20">
+    <div class="panel">
+        <h2>Account information</h2>
+        <div class="row">
+            <span class="muted">Username</span>
+            <strong id="accountUsername"></strong>
+        </div>
+        <hr style="border:0;border-top:1px solid var(--line);margin:15px 0">
+        <div class="row">
+            <span class="muted">Account ID</span>
+            <strong id="accountIdText"></strong>
+        </div>
+        <hr style="border:0;border-top:1px solid var(--line);margin:15px 0">
+        <div class="row">
+            <span class="muted">Card type</span>
+            <strong id="accountCardType"></strong>
+        </div>
+        <button class="btn ghost" onclick="showPage('profilePage')">
+            Account settings
+        </button>
+    </div>
+</section>
 
-            <input id="transferAmount"
-                   type="number"
-                   min="1"
-                   step="1"
-                   placeholder="Amount in ৳">
+<!-- TRANSFER -->
+<section id="transferPage" class="page hidden">
+    <button class="btn ghost small" onclick="showPage('dashboard')">← Dashboard</button>
+    <div class="hero" style="margin-top:24px">
+        <div class="eyebrow">VIRTUAL PAYMENTS</div>
+        <h1>Send money.</h1>
+        <p>Send virtual funds to an account saved in this browser.</p>
+    </div>
 
-            <button onclick="transfer()">Send Money →</button>
+    <div class="panel">
+        <h2>Recipient details</h2>
+        <div class="field">
+            <label>RECIPIENT USERNAME OR ACCOUNT ID</label>
+            <input id="transferRecipient" placeholder="Enter username or account ID">
+        </div>
+        <div class="field">
+            <label>AMOUNT IN TAKA</label>
+            <input id="transferAmount" type="number" min="1" step="1"
+                   placeholder="e.g. 250">
+        </div>
+        <p class="muted" id="transferFundingNote"></p>
+        <button class="btn" onclick="transferMoney()">Review and send →</button>
+    </div>
+</section>
+
+<!-- SCANNER -->
+<section id="scanPage" class="page hidden">
+    <button class="btn ghost small" onclick="showPage('dashboard')">← Dashboard</button>
+    <div class="hero" style="margin-top:24px">
+        <div class="eyebrow">STAR BANK SCANNER</div>
+        <h1>Scan a card.</h1>
+        <p>Point your camera at a STAR BANK QR code to check the account ID.</p>
+    </div>
+
+    <div class="panel scannerbox">
+        <div id="reader"></div>
+        <p id="scannerStatus" class="muted center">
+            Tap Start scanner to use your camera.
+        </p>
+        <button class="btn" id="startScanner" onclick="startScanner()">
+            Start scanner
+        </button>
+        <button class="btn secondary hidden" id="stopScanner"
+                onclick="stopScanner()">Stop camera</button>
+        <div class="field">
+            <label>OR ENTER AN ACCOUNT ID</label>
+            <input id="manualAccountId" placeholder="SB...">
+        </div>
+        <button class="btn secondary" onclick="validateManualId()">
+            Check account ID
+        </button>
+        <div id="scanResult"></div>
+    </div>
+</section>
+
+<!-- OWN QR -->
+<section id="myQrPage" class="page hidden">
+    <button class="btn ghost small" onclick="showPage('dashboard')">← Dashboard</button>
+    <div class="hero" style="margin-top:24px">
+        <div class="eyebrow">YOUR PRINTABLE ACCOUNT CODE</div>
+        <h1>Your QR code.</h1>
+        <p>This QR code contains only your unique account ID.</p>
+    </div>
+
+    <div class="panel center">
+        <h2 id="qrUsername"></h2>
+        <div class="qrwrap">
+            <div id="myQr"></div>
+        </div>
+        <strong id="qrAccountId"></strong>
+        <p class="muted">STAR BANK virtual account identifier</p>
+        <button class="btn" onclick="downloadQr()">Save QR image</button>
+        <button class="btn secondary" onclick="printCard()">Print my card and QR</button>
+        <div class="notice">
+            The QR identifies an account; it does not prove ownership or authorize payments.
+        </div>
+    </div>
+</section>
+
+<!-- CUSTOMIZE -->
+<section id="customizePage" class="page hidden">
+    <button class="btn ghost small" onclick="showPage('dashboard')">← Dashboard</button>
+    <div class="hero" style="margin-top:24px">
+        <div class="eyebrow">MAKE IT YOURS</div>
+        <h1>Design your card.</h1>
+        <p>Customize the appearance of your fictional STAR BANK card.</p>
+    </div>
+
+    <div class="grid">
+        <div class="panel">
+            <h2>Live card preview</h2>
+            <div id="customPreview"></div>
         </div>
 
-        <div class="card">
-            <h2>▤ Transaction History</h2>
-            <div id="history">
-                <p class="muted">No transactions yet.</p>
+        <div class="panel">
+            <h2>Card appearance</h2>
+            <div class="field">
+                <label>CARDHOLDER NAME</label>
+                <input id="customName" maxlength="24" placeholder="Cardholder name">
             </div>
+            <div class="field">
+                <label>CARD TYPE</label>
+                <select id="customType">
+                    <option value="debit">Debit</option>
+                    <option value="credit">Credit</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>COLOUR</label>
+                <select id="customColor">
+                    <option value="midnight">Midnight blue</option>
+                    <option value="sapphire">Sapphire blue</option>
+                    <option value="purple">Purple</option>
+                    <option value="emerald">Emerald green</option>
+                    <option value="black">Black</option>
+                    <option value="rose">Rose</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>DESIGN</label>
+                <select id="customDesign">
+                    <option value="orbit">Orbit</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="neon">Neon</option>
+                    <option value="luxury">Luxury</option>
+                </select>
+            </div>
+            <button class="btn" onclick="saveCustomization()">Save design</button>
         </div>
+    </div>
+</section>
 
-        <div class="card">
-            <h2>Account Information</h2>
-            <p class="muted">Username</p>
-            <strong id="profileUser"></strong>
+<!-- HISTORY -->
+<section id="historyPage" class="page hidden">
+    <button class="btn ghost small" onclick="showPage('dashboard')">← Dashboard</button>
+    <div class="hero" style="margin-top:24px">
+        <div class="eyebrow">ACCOUNT ACTIVITY</div>
+        <h1>Transactions.</h1>
+        <p>Your saved virtual money transfer history.</p>
+    </div>
+    <div class="panel" id="fullHistory"></div>
+</section>
 
-            <p class="muted" style="margin-top:16px">
-                Account number
-            </p>
-            <strong id="profileId"></strong>
-        </div>
+<!-- PROFILE -->
+<section id="profilePage" class="page hidden">
+    <button class="btn ghost small" onclick="showPage('dashboard')">← Dashboard</button>
+    <div class="hero" style="margin-top:24px">
+        <div class="eyebrow">YOUR ACCOUNT</div>
+        <h1>Settings.</h1>
+    </div>
+    <div class="panel">
+        <h2>Account information</h2>
+        <p class="muted">Username</p>
+        <strong id="profileUsername"></strong>
+        <p class="muted" style="margin-top:20px">Account ID</p>
+        <strong id="profileAccountId"></strong>
+        <button class="btn danger" onclick="logout()">Log out</button>
+    </div>
+    <div class="panel">
+        <h3>Prototype limitations</h3>
+        <p class="muted">
+            This version stores data in this browser. Do not use a real PIN,
+            real payment-card details, or real banking information.
+            Clearing browser data may delete your virtual accounts.
+        </p>
+    </div>
+</section>
 
-    </section>
+<!-- PRINTABLE CARD -->
+<div id="printCard" class="hidden">
+    <div id="printableCardFace"></div>
+    <div class="qrwrap">
+        <div id="printableQr"></div>
+    </div>
+    <div class="printnote">
+        STAR BANK — FICTIONAL VIRTUAL CARD — NOT VALID FOR PAYMENT
+    </div>
+</div>
 
-    <p class="notice">
-        STAR BANK is a fictional virtual-money simulator.
-        It is not a real bank and does not handle real money.
-    </p>
+<div class="notice">
+    <strong>Prototype notice:</strong>
+    STAR BANK is a fictional simulator. Accounts, balances, cards and transfers
+    are stored locally in this browser. They are not secure bank records.
+    Do not enter real financial information.
+</div>
 
 </main>
 
-<footer>STAR BANK © 2026 · Virtual Banking Experience</footer>
+<footer>
+    ✦ STAR BANK · VIRTUAL BANKING EXPERIENCE · NOT A REAL FINANCIAL INSTITUTION
+</footer>
 
 <script>
-const STORAGE_KEY = "starBankData_v1";
+const STORE = "starbank_premium_v1";
 
 let accounts = {};
 let currentUser = null;
+let scanner = null;
+let selectedColor = "midnight";
+let qrValue = "";
 
-try {
-    accounts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-} catch (error) {
-    accounts = {};
+const colors = {
+    midnight: "linear-gradient(135deg,#111827,#263c65)",
+    sapphire: "linear-gradient(135deg,#0759c7,#21b5ee)",
+    purple: "linear-gradient(135deg,#5426a8,#b15cff)",
+    emerald: "linear-gradient(135deg,#075b48,#36c99a)",
+    black: "linear-gradient(135deg,#090909,#454545)",
+    rose: "linear-gradient(135deg,#8d214f,#fa78b6)"
+};
+
+function loadAccounts() {
+    try {
+        const data = JSON.parse(localStorage.getItem(STORE) || "{}");
+        if (data && typeof data === "object" && !Array.isArray(data)) {
+            accounts = data;
+        }
+    } catch (e) {
+        accounts = {};
+    }
 }
 
-function save() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(accounts));
+function saveAccounts() {
+    localStorage.setItem(STORE, JSON.stringify(accounts));
 }
 
-function cleanUsername(value) {
+function usernameKey(value) {
     return value.trim().toLowerCase();
 }
 
-function formatMoney(amount) {
-    return "৳" + Number(amount).toLocaleString("en-BD");
+function money(value) {
+    return "৳" + Number(value || 0).toLocaleString("en-BD");
+}
+
+function randomDigits(length) {
+    let out = "";
+    for (let i = 0; i < length; i++) {
+        out += Math.floor(Math.random() * 10);
+    }
+    return out;
 }
 
 function makeAccountId() {
-    return "SB" + Math.random().toString(10).slice(2, 10);
+    let id;
+    do {
+        id = "SB" + randomDigits(10);
+    } while (findAccountById(id));
+    return id;
+}
+
+function makeCardNumber() {
+    return "9999 " + randomDigits(4) + " " +
+           randomDigits(4) + " " + randomDigits(4);
+}
+
+function findAccountById(id) {
+    return Object.values(accounts).find(a => a.accountId === id);
+}
+
+function currentAccount() {
+    return currentUser ? accounts[currentUser] : null;
+}
+
+function showAuthTab(tab) {
+    document.getElementById("loginForm").classList.toggle("hidden", tab !== "login");
+    document.getElementById("signupForm").classList.toggle("hidden", tab !== "signup");
+    document.getElementById("loginTab").classList.toggle("active", tab === "login");
+    document.getElementById("signupTab").classList.toggle("active", tab === "signup");
+}
+
+document.getElementById("signupType").addEventListener("change", function() {
+    document.getElementById("creditChoice").classList.toggle(
+        "hidden", this.value !== "credit"
+    );
+});
+
+function pickColor(button) {
+    selectedColor = button.dataset.color;
+    document.querySelectorAll("#signupColors .colorpick").forEach(b => {
+        b.classList.toggle("selected", b === button);
+    });
 }
 
 function register() {
-    const username = cleanUsername(
-        document.getElementById("newUser").value
-    );
-
-    const pin = document.getElementById("newPin").value;
+    const username = usernameKey(document.getElementById("signupUsername").value);
+    const pin = document.getElementById("signupPin").value;
+    const name = document.getElementById("signupName").value.trim() || username;
+    const type = document.getElementById("signupType").value;
+    const limit = type === "credit"
+        ? Number(document.getElementById("signupCreditLimit").value)
+        : 0;
 
     if (!/^[a-z0-9_]{3,20}$/.test(username)) {
-        alert("Username must be 3–20 characters using letters, numbers or underscores.");
+        alert("Choose a username of 3–20 letters, numbers or underscores.");
         return;
     }
 
     if (!/^\d{4}$/.test(pin)) {
-        alert("Please choose a 4-digit PIN.");
+        alert("Your PIN must contain exactly 4 digits.");
         return;
     }
 
     if (accounts[username]) {
-        alert("That username is already taken!");
+        alert("That username is already taken.");
         return;
     }
 
+    const accountId = makeAccountId();
+
     accounts[username] = {
-        username: username,
-        pin: pin,
+        username,
+        pin,
+        name: name.slice(0, 24),
+        accountId,
+        cardNumber: makeCardNumber(),
+        cardType: type,
+        color: selectedColor,
+        design: document.getElementById("signupDesign").value,
         balance: 1000,
-        accountId: makeAccountId(),
-        history: []
+        creditLimit: limit,
+        creditDebt: 0,
+        history: [],
+        createdAt: new Date().toISOString()
     };
 
-    save();
+    saveAccounts();
 
-    document.getElementById("newUser").value = "";
-    document.getElementById("newPin").value = "";
+    document.getElementById("signupUsername").value = "";
+    document.getElementById("signupPin").value = "";
+    document.getElementById("signupName").value = "";
 
     currentUser = username;
-    showDashboard();
+    openDashboard();
 
-    alert("Account created! You received ৳1,000 in virtual money.");
+    alert("Welcome to STAR BANK! Your account and unique QR code are ready.");
+    showPage("myQrPage");
 }
 
 function login() {
-    const username = cleanUsername(
-        document.getElementById("loginUser").value
-    );
-
+    const username = usernameKey(document.getElementById("loginUsername").value);
     const pin = document.getElementById("loginPin").value;
 
     if (!accounts[username] || accounts[username].pin !== pin) {
@@ -373,83 +1175,236 @@ function login() {
     }
 
     currentUser = username;
-
     document.getElementById("loginPin").value = "";
-
-    showDashboard();
+    openDashboard();
 }
 
 function logout() {
+    stopScanner();
     currentUser = null;
 
+    document.getElementById("authSection").classList.remove("hidden");
     document.getElementById("dashboard").classList.add("hidden");
-    document.getElementById("auth").classList.remove("hidden");
+    document.getElementById("headerLogout").classList.add("hidden");
+
+    document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+    showAuthTab("login");
 }
 
-function showDashboard() {
-    document.getElementById("auth").classList.add("hidden");
+function openDashboard() {
+    document.getElementById("authSection").classList.add("hidden");
     document.getElementById("dashboard").classList.remove("hidden");
-
-    const account = accounts[currentUser];
-
-    document.getElementById("welcomeUser").textContent =
-        account.username;
-
-    document.getElementById("balance").textContent =
-        formatMoney(account.balance);
-
-    document.getElementById("accountId").textContent =
-        account.accountId;
-
-    document.getElementById("profileUser").textContent =
-        account.username;
-
-    document.getElementById("profileId").textContent =
-        account.accountId;
-
-    renderHistory();
+    document.getElementById("headerLogout").classList.remove("hidden");
+    refreshDashboard();
+    showPage("dashboard");
 }
 
-function transfer() {
-    const recipientName = cleanUsername(
-        document.getElementById("recipient").value
-    );
+function cardHTML(account) {
+    const card = document.createElement("div");
+    card.className = "bankcard";
+    card.dataset.design = account.design || "orbit";
+    card.style.background = colors[account.color] || colors.midnight;
 
-    const amount = Number(
-        document.getElementById("transferAmount").value
-    );
+    const top = document.createElement("div");
+    top.className = "cardtop";
 
-    if (!recipientName || !accounts[recipientName]) {
-        alert("Recipient account not found. Check the username.");
+    const brand = document.createElement("div");
+    brand.className = "cardbrand";
+    brand.textContent = "✦ STAR BANK";
+
+    const type = document.createElement("div");
+    type.className = "cardtype";
+    type.textContent = account.cardType + " CARD";
+
+    top.append(brand, type);
+
+    const chip = document.createElement("div");
+    chip.className = "chip";
+
+    const number = document.createElement("div");
+    number.className = "cardnumber";
+    number.textContent = account.cardNumber;
+
+    const bottom = document.createElement("div");
+    bottom.className = "cardbottom";
+
+    const holder = document.createElement("div");
+    const name = document.createElement("div");
+    name.className = "cardholder";
+    name.textContent = account.name;
+
+    const expiry = document.createElement("div");
+    expiry.className = "cardexpiry";
+    expiry.textContent = "VIRTUAL · " + fakeExpiry(account.createdAt);
+
+    holder.append(name, expiry);
+
+    const badge = document.createElement("div");
+    badge.className = "cardtype";
+    badge.textContent = "NOT FOR PAYMENT";
+
+    bottom.append(holder, badge);
+    card.append(top, chip, number, bottom);
+    return card;
+}
+
+function fakeExpiry(createdAt) {
+    const date = new Date(createdAt || Date.now());
+    date.setFullYear(date.getFullYear() + 4);
+    return String(date.getMonth() + 1).padStart(2, "0") + "/" +
+           String(date.getFullYear()).slice(-2);
+}
+
+function refreshDashboard() {
+    const account = currentAccount();
+    if (!account) return;
+
+    document.getElementById("dashName").textContent = account.name;
+    document.getElementById("dashBalance").textContent = money(account.balance);
+    document.getElementById("dashCredit").textContent =
+        account.cardType === "credit"
+        ? money(Math.max(0, account.creditLimit - account.creditDebt))
+        : "—";
+
+    document.getElementById("dashboardCard").replaceChildren(cardHTML(account));
+
+    document.getElementById("accountUsername").textContent = account.username;
+    document.getElementById("accountIdText").textContent = account.accountId;
+    document.getElementById("accountCardType").textContent =
+        account.cardType.toUpperCase();
+
+    document.getElementById("profileUsername").textContent = account.username;
+    document.getElementById("profileAccountId").textContent = account.accountId;
+
+    const fundingNote = account.cardType === "credit"
+        ? "Your credit limit is " + money(account.creditLimit) +
+          ". Transfers can use your remaining credit. Your existing balance remains separate."
+        : "Transfers will be deducted from your available virtual balance.";
+
+    document.getElementById("transferFundingNote").textContent = fundingNote;
+
+    renderHistory("recentHistory", account.history.slice(0, 4));
+    renderHistory("fullHistory", account.history);
+}
+
+function showPage(pageId) {
+    stopScanner();
+
+    document.getElementById("authSection").classList.add("hidden");
+    document.getElementById("dashboard").classList.add("hidden");
+    document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+
+    if (pageId === "dashboard") {
+        document.getElementById("dashboard").classList.remove("hidden");
+        refreshDashboard();
         return;
     }
 
-    if (recipientName === currentUser) {
-        alert("You cannot send money to yourself!");
+    const page = document.getElementById(pageId);
+    if (page) page.classList.remove("hidden");
+
+    if (pageId === "myQrPage") renderMyQr();
+    if (pageId === "customizePage") prepareCustomization();
+    if (pageId === "historyPage") renderHistory("fullHistory", currentAccount().history);
+}
+
+function renderHistory(containerId, history) {
+    const container = document.getElementById(containerId);
+    container.replaceChildren();
+
+    if (!history || history.length === 0) {
+        const p = document.createElement("p");
+        p.className = "muted";
+        p.textContent = "No transactions yet.";
+        container.append(p);
+        return;
+    }
+
+    history.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "transaction";
+
+        const left = document.createElement("div");
+        const title = document.createElement("strong");
+        title.textContent = item.type + " · " + item.other;
+
+        const time = document.createElement("div");
+        time.className = "muted";
+        time.style.marginTop = "5px";
+        time.textContent = item.time;
+
+        left.append(title, time);
+
+        const amount = document.createElement("div");
+        amount.className = "txamount " +
+            (item.type === "Received" ? "positive" : "negative");
+        amount.textContent =
+            (item.type === "Received" || item.type === "Credit repayment" ? "+" : "−") +
+            money(item.amount);
+
+        row.append(left, amount);
+        container.append(row);
+    });
+}
+
+function findRecipient(input) {
+    const value = input.trim().toLowerCase();
+    if (accounts[value]) return accounts[value];
+    return findAccountById(input.trim());
+}
+
+function transferMoney() {
+    const sender = currentAccount();
+    const recipientText = document.getElementById("transferRecipient").value;
+    const amount = Number(document.getElementById("transferAmount").value);
+
+    if (!recipientText.trim()) {
+        alert("Enter a recipient username or account ID.");
+        return;
+    }
+
+    const recipient = findRecipient(recipientText);
+
+    if (!recipient) {
+        alert("Account not found in this browser. Other devices are not connected.");
+        return;
+    }
+
+    if (recipient.username === sender.username) {
+        alert("You cannot transfer money to yourself.");
         return;
     }
 
     if (!Number.isSafeInteger(amount) || amount <= 0) {
-        alert("Enter a valid whole-number amount.");
+        alert("Enter a positive whole-number amount.");
         return;
     }
 
-    const sender = accounts[currentUser];
-    const recipient = accounts[recipientName];
+    let fromBalance = Math.min(sender.balance, amount);
+    let fromCredit = amount - fromBalance;
 
-    if (amount > sender.balance) {
-        alert("Insufficient virtual balance!");
-        return;
+    if (fromCredit > 0) {
+        if (sender.cardType !== "credit") {
+            alert("Insufficient virtual balance.");
+            return;
+        }
+
+        const available = sender.creditLimit - sender.creditDebt;
+        if (fromCredit > available) {
+            alert("Insufficient balance and available credit.");
+            return;
+        }
     }
 
-    if (!confirm(
-        "Send " + formatMoney(amount) +
-        " to " + recipient.username + "?"
-    )) {
-        return;
-    }
+    const funding = fromCredit > 0
+        ? "৳" + fromBalance + " from balance and " + money(fromCredit) + " from credit"
+        : money(amount) + " from your balance";
 
-    sender.balance -= amount;
+    if (!confirm("Send " + money(amount) + " to " + recipient.username +
+                 "?\nFunding: " + funding)) return;
+
+    sender.balance -= fromBalance;
+    sender.creditDebt += fromCredit;
     recipient.balance += amount;
 
     const time = new Date().toLocaleString();
@@ -457,71 +1412,258 @@ function transfer() {
     sender.history.unshift({
         type: "Sent",
         other: recipient.username,
-        amount: amount,
-        time: time
+        amount,
+        time
     });
 
     recipient.history.unshift({
         type: "Received",
         other: sender.username,
-        amount: amount,
-        time: time
+        amount,
+        time
     });
 
-    save();
+    saveAccounts();
 
-    document.getElementById("recipient").value = "";
+    document.getElementById("transferRecipient").value = "";
     document.getElementById("transferAmount").value = "";
 
-    showDashboard();
-
-    alert("Transfer complete! Virtual money sent successfully.");
+    refreshDashboard();
+    showPage("dashboard");
+    alert("Virtual transfer complete!");
 }
 
-function renderHistory() {
-    const history = accounts[currentUser].history;
-    const container = document.getElementById("history");
+function renderMyQr() {
+    const account = currentAccount();
+    if (!account) return;
 
-    container.innerHTML = "";
+    document.getElementById("qrUsername").textContent = account.name;
+    document.getElementById("qrAccountId").textContent = account.accountId;
 
-    if (!history.length) {
-        container.innerHTML =
-            '<p class="muted">No transactions yet.</p>';
+    const box = document.getElementById("myQr");
+    box.replaceChildren();
+
+    qrValue = account.accountId;
+
+    if (typeof QRCode === "undefined") {
+        box.textContent = "QR library did not load. Connect to the internet and reload.";
         return;
     }
 
-    history.slice(0, 30).forEach(function (item) {
-        const row = document.createElement("div");
-        row.className = "transaction";
-
-        const top = document.createElement("div");
-        top.className = "row";
-
-        const title = document.createElement("strong");
-        title.textContent = item.type + " · " + item.other;
-
-        const value = document.createElement("span");
-        value.className =
-            item.type === "Received" ? "positive" : "negative";
-
-        value.textContent =
-            (item.type === "Received" ? "+" : "−") +
-            formatMoney(item.amount);
-
-        const time = document.createElement("div");
-        time.className = "muted";
-        time.style.marginTop = "6px";
-        time.textContent = item.time;
-
-        top.appendChild(title);
-        top.appendChild(value);
-
-        row.appendChild(top);
-        row.appendChild(time);
-
-        container.appendChild(row);
+    new QRCode(box, {
+        text: qrValue,
+        width: 210,
+        height: 210,
+        correctLevel: QRCode.CorrectLevel.M
     });
 }
+
+function downloadQr() {
+    const box = document.getElementById("myQr");
+    const canvas = box.querySelector("canvas");
+    const image = box.querySelector("img");
+
+    let url = canvas ? canvas.toDataURL("image/png") :
+              image ? image.src : null;
+
+    if (!url) {
+        alert("QR code isn't ready yet.");
+        return;
+    }
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "starbank-qr.png";
+    link.click();
+}
+
+function printCard() {
+    const account = currentAccount();
+    if (!account) return;
+
+    document.getElementById("printableCardFace").replaceChildren(cardHTML(account));
+
+    const qr = document.getElementById("printableQr");
+    qr.replaceChildren();
+
+    if (typeof QRCode === "undefined") {
+        alert("The QR library hasn't loaded. Connect to the internet and reload.");
+        return;
+    }
+
+    new QRCode(qr, {
+        text: account.accountId,
+        width: 160,
+        height: 160,
+        correctLevel: QRCode.CorrectLevel.M
+    });
+
+    document.getElementById("printCard").classList.remove("hidden");
+
+    setTimeout(() => {
+        window.print();
+        document.getElementById("printCard").classList.add("hidden");
+    }, 400);
+}
+
+async function startScanner() {
+    const status = document.getElementById("scannerStatus");
+    const result = document.getElementById("scanResult");
+
+    result.replaceChildren();
+
+    if (typeof Html5Qrcode === "undefined") {
+        status.textContent = "Scanner library didn't load. Check your internet connection.";
+        return;
+    }
+
+    try {
+        scanner = new Html5Qrcode("reader");
+
+        document.getElementById("startScanner").classList.add("hidden");
+        document.getElementById("stopScanner").classList.remove("hidden");
+        status.textContent = "Requesting camera permission...";
+
+        await scanner.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: { width: 230, height: 230 },
+                aspectRatio: 1
+            },
+            decodedText => {
+                stopScanner();
+                validateScannedId(decodedText);
+            },
+            () => {}
+        );
+
+        status.textContent = "Point the camera at a STAR BANK QR code.";
+    } catch (error) {
+        status.textContent = "Camera couldn't start. Allow camera access and use the HTTPS website.";
+        document.getElementById("startScanner").classList.remove("hidden");
+        document.getElementById("stopScanner").classList.add("hidden");
+        scanner = null;
+    }
+}
+
+async function stopScanner() {
+    if (scanner) {
+        try {
+            if (scanner.isScanning) await scanner.stop();
+            scanner.clear();
+        } catch (e) {}
+        scanner = null;
+    }
+
+    const start = document.getElementById("startScanner");
+    const stop = document.getElementById("stopScanner");
+
+    if (start) start.classList.remove("hidden");
+    if (stop) stop.classList.add("hidden");
+}
+
+function validateScannedId(rawValue) {
+    const id = String(rawValue).trim();
+    document.getElementById("manualAccountId").value = id;
+    validateAccountId(id);
+}
+
+function validateManualId() {
+    const id = document.getElementById("manualAccountId").value.trim();
+    validateAccountId(id);
+}
+
+function validateAccountId(id) {
+    const container = document.getElementById("scanResult");
+    container.replaceChildren();
+
+    const account = findAccountById(id);
+
+    const panel = document.createElement("div");
+    panel.className = "notice";
+
+    const heading = document.createElement("strong");
+    heading.textContent = account ? "✓ Account found in this browser" : "✕ Account not found";
+
+    const description = document.createElement("p");
+    description.textContent = account
+        ? "Username: " + account.username +
+          " · Card type: " + account.cardType.toUpperCase() +
+          " · Account ID: " + account.accountId
+        : "This ID doesn't match an account saved in this browser. It may belong to another device, or the QR may be invalid.";
+
+    panel.append(heading, description);
+
+    if (account && account.username !== currentUser) {
+        const btn = document.createElement("button");
+        btn.className = "btn";
+        btn.textContent = "Transfer to this account";
+        btn.onclick = () => {
+            document.getElementById("transferRecipient").value = account.username;
+            showPage("transferPage");
+        };
+        panel.append(btn);
+    }
+
+    container.append(panel);
+    document.getElementById("scannerStatus").textContent =
+        account ? "Account ID matched." : "No matching local account.";
+}
+
+function prepareCustomization() {
+    const account = currentAccount();
+    document.getElementById("customName").value = account.name;
+    document.getElementById("customType").value = account.cardType;
+    document.getElementById("customColor").value = account.color;
+    document.getElementById("customDesign").value = account.design;
+    updateCustomPreview();
+
+    ["customName", "customType", "customColor", "customDesign"].forEach(id => {
+        document.getElementById(id).oninput = updateCustomPreview;
+        document.getElementById(id).onchange = updateCustomPreview;
+    });
+}
+
+function updateCustomPreview() {
+    const account = currentAccount();
+    const previewAccount = {
+        ...account,
+        name: document.getElementById("customName").value || account.name,
+        cardType: document.getElementById("customType").value,
+        color: document.getElementById("customColor").value,
+        design: document.getElementById("customDesign").value
+    };
+
+    document.getElementById("customPreview").replaceChildren(cardHTML(previewAccount));
+}
+
+function saveCustomization() {
+    const account = currentAccount();
+
+    account.name = document.getElementById("customName").value.trim().slice(0, 24) ||
+                   account.username;
+
+    account.cardType = document.getElementById("customType").value;
+    account.color = document.getElementById("customColor").value;
+    account.design = document.getElementById("customDesign").value;
+
+    if (account.cardType === "debit") {
+        account.creditDebt = 0;
+        account.creditLimit = 0;
+    } else if (account.creditLimit <= 0) {
+        account.creditLimit = 5000;
+    }
+
+    saveAccounts();
+    refreshDashboard();
+    showPage("dashboard");
+
+    alert("Your card design has been saved!");
+}
+
+loadAccounts();
+showAuthTab("login");
 </script>
 
 </body>
